@@ -28,7 +28,7 @@ The DCLDE 2027 dataset is publicly available from NOAA (DOI: 10.25921/15ey-mh50)
 
 ## Code Availability
 
-All analysis scripts, the orca-engine framework, and the 74-test validation suite are publicly available at github.com/cmiklov/Seladori/orca-engine. Each script is self-contained and reproduces its findings from raw data with fixed random seeds (random_state=42 throughout). The pipeline requires Python 3.8+, numpy, scipy, scikit-learn, and librosa.
+All analysis scripts, the orca-engine framework, and the 74-test validation suite are publicly available at https://github.com/cmiklov/killer-whale-syntax. Each script is self-contained and reproduces its findings from raw data with fixed random seeds (random_state=42 throughout). The pipeline requires Python 3.8+, numpy, scipy, scikit-learn, and librosa.
 
 ## AI Disclosure
 

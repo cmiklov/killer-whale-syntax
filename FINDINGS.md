@@ -1614,5 +1614,5 @@ data/signals-srkw/                      ← git clone (gitignored, ~50MB)
 
 If this work is useful, cite as:
 
-> Orca-engine: Reaction-diffusion analysis of orca vocalisations.
-> Part of the Seladori project. github.com/cmiklov/Seladori
+> Mucklow, C. (2026). Topological Syntax in Killer Whale Communication.
+> https://github.com/cmiklov/killer-whale-syntax

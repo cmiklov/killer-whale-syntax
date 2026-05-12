@@ -321,9 +321,7 @@ def build():
 
     # Print-ready version
     if "--print" in sys.argv:
-        try:
-            from weasyprint import HTML as WHTML
-            print_css = CSS + """
+        print_css = CSS + """
 /* Print overrides */
 @page {
     size: A4;
@@ -385,7 +383,7 @@ table {
     page-break-inside: avoid;
 }
 """
-            print_html = f"""<!DOCTYPE html>
+        print_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -400,11 +398,25 @@ table {
 {rest_html}
 </body>
 </html>"""
+
+        # Write the print HTML so an external renderer (e.g. Chrome headless
+        # --print-to-pdf) can be used when weasyprint's GTK dependencies
+        # aren't available on this system.
+        print_html_path = os.path.join(paper_dir, "PAPER_PRINT.html")
+        with open(print_html_path, "w", encoding="utf-8") as f:
+            f.write(print_html)
+        print(f"Written: {print_html_path}")
+
+        # Attempt weasyprint PDF generation; fall back gracefully if GTK
+        # libraries are not installed.
+        try:
+            from weasyprint import HTML as WHTML
             print_path = os.path.join(paper_dir, "PAPER_PRINT.pdf")
             WHTML(string=print_html).write_pdf(print_path)
             print(f"Written: {print_path}")
         except Exception as e:
-            print(f"Print PDF generation failed: {e}")
+            print(f"Print PDF generation via weasyprint failed: {e}")
+            print(f"  -> use Chrome/Edge to render PAPER_PRINT.html to PDF.")
 
 if __name__ == "__main__":
     build()

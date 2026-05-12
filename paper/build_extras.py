@@ -14,7 +14,6 @@ PAPER_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DOCS = {
     "EXECUTIVE_SUMMARY.md": "EXECUTIVE_SUMMARY.pdf",
-    "OPEN_DAY_BRIEFING.md": "OPEN_DAY_BRIEFING.pdf",
 }
 
 CSS = """
