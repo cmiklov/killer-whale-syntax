@@ -1,6 +1,6 @@
 # Topological Syntax in Killer Whale Communication
 
-A reaction-diffusion topological framework for analysing cetacean vocalisations, applied to ~40,000 killer whale calls across four ecotypes and 18 years of recordings (DCLDE 2027 dataset, 2005-2023).
+A reaction-diffusion topological framework for analysing cetacean vocalisations, applied to approximately 40,000 killer whale calls across four ecotypes and 18 years of recordings (DCLDE 2027 dataset, 2005-2023).
 
 **Paper:** [paper/PAPER.pdf](paper/PAPER.pdf) | **Executive summary:** [paper/EXECUTIVE_SUMMARY.pdf](paper/EXECUTIVE_SUMMARY.pdf)
 

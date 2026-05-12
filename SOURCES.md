@@ -148,4 +148,4 @@
 | TKW audio (extracted) | 2,453 calls | TKW | 2011-2020 | Findings 44-45 |
 | OKW audio (extracted) | 1,255 calls | OKW | 2013-2023 | Finding 45 |
 | Whistle exemplars | 7 types | SRKW | 2022-2024 | Finding 39 |
-| **Total analysed** | **~40,000 calls** | **4 ecotypes** | **18 years** | **58 findings (52 standing, 2 retracted, 4 stress-tested)** |
+| **Total analysed** | **approximately 40,000 calls** | **4 ecotypes** | **18 years** | **58 findings (52 standing, 2 retracted, 4 stress-tested)** |
