@@ -51,8 +51,8 @@ Neither is "more advanced." Orthogonal innovations.
 ## Quick start
 
 ```bash
-git clone https://github.com/cmiklov/orca-paper
-cd orca-paper
+git clone https://github.com/cmiklov/killer-whale-syntax
+cd killer-whale-syntax
 pip install -r requirements.txt
 
 # Run the test suite (synthetic data only — no external downloads)
@@ -97,7 +97,7 @@ This work independently verified 8 published findings from Ford (1991) and other
 
 If you use this work, please cite:
 
-> Mucklow, C. (2026). *Topological Syntax in Killer Whale Communication.* https://github.com/cmiklov/orca-paper
+> Mucklow, C. (2026). *Topological Syntax in Killer Whale Communication.* https://github.com/cmiklov/killer-whale-syntax
 
 Machine-readable citation in [`CITATION.cff`](CITATION.cff).
 

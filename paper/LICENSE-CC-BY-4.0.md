@@ -20,7 +20,7 @@ Attribution 4.0 International License.
 **Suggested citation:**
 
 > Mucklow, C. (2026). Topological Syntax in Killer Whale Communication.
-> https://github.com/cmiklov/orca-paper
+> https://github.com/cmiklov/killer-whale-syntax
 
 Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
 
