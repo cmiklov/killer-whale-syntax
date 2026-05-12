@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this software or paper, please cite it as below."
+title: "Topological Syntax in Killer Whale Communication"
+abstract: >-
+  A reaction-diffusion topological framework applied to ~40,000 killer whale
+  vocalisations across four ecotypes (DCLDE 2027 dataset, 2005-2023), finding
+  that acoustic similarity between calls predicts their sequential order
+  (Cohen's d = 1.34-1.57; Boltzmann R² > 0.96), mutual-information half-life
+  of 45.4 calls (6-15x any other non-human species), Markov order >4, and
+  population-scale grammar shifts under ecological stress
+  (2019 prey crisis, p = 10⁻²⁹⁶).
+authors:
+  - family-names: Mucklow
+    given-names: Chad
+    email: chadmucklow@gmail.com
+repository-code: "https://github.com/cmiklov/orca-paper"
+license: MIT
+license-url: "https://opensource.org/licenses/MIT"
+keywords:
+  - bioacoustics
+  - cetacean communication
+  - killer whale
+  - orca
+  - reaction-diffusion
+  - topological syntax
+  - mutual information
+  - markov models
+  - conservation
+date-released: 2026-05-12
+version: "1.0.0"

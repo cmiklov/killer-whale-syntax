@@ -1,0 +1,47 @@
+id,call_type,pod,description,contexts,frequency
+1,S01,J,"Discrete pulsed call, two-component — most common SRKW call",foraging|travel|socializing|rest,0.30
+2,S01,K,"Discrete pulsed call, two-component — shared across all pods",foraging|travel|socializing,0.28
+3,S01,L,"Discrete pulsed call, two-component — shared across all pods",foraging|travel|socializing,0.25
+4,S02,J,"Variable call, rising upcall",socializing|travel,0.06
+5,S02,L,"Variable call, rising upcall — shared J+L",socializing|travel,0.05
+6,S03,J,"Rapid pulsed call — shared across all pods",foraging|travel,0.10
+7,S03,K,"Rapid pulsed call — shared across all pods",foraging|travel,0.09
+8,S03,L,"Rapid pulsed call — shared across all pods",foraging|travel,0.08
+9,S04,J,"Goose honk — distinctive two-part call",socializing|foraging,0.07
+10,S04,L,"Goose honk — shared J+L",socializing|foraging,0.06
+11,S05,L,"Descending tonal — L-pod specific",socializing|rest,0.04
+12,S06,J,"Shared across all pods",foraging|travel,0.05
+13,S06,K,"Shared across all pods",foraging|travel,0.05
+14,S06,L,"Shared across all pods",foraging|travel,0.05
+15,S07,J,"Oh well darn — distinctive frequency-modulated call",travel|socializing,0.06
+16,S07,K,"Oh well darn — shared across all pods",travel|socializing,0.05
+17,S07,L,"Oh well darn — shared across all pods",travel|socializing,0.05
+18,S08,L,"L-pod specific call",foraging|socializing,0.03
+19,S09,L,"Figaro — L-pod specific, complex frequency modulation",socializing,0.03
+20,S10,J,"Squeaky balloon — excitement call, all orca types",socializing,0.08
+21,S10,L,"Squeaky balloon — shared J+L",socializing,0.07
+22,S11,L,"L-pod specific",travel|socializing,0.03
+23,S12,J,"Shared across all pods",foraging|socializing,0.05
+24,S12,K,"Shared across all pods",foraging|socializing,0.05
+25,S12,L,"Shared across all pods",foraging|socializing,0.04
+26,S13,J,"Donkey — high-frequency component similar to S42, J-pod specific",foraging|socializing,0.04
+27,S14,J,"J-pod specific call",socializing,0.03
+28,S15,K,"K-pod specific call",foraging|socializing,0.04
+29,S16,J,"Kitten mew — shared across all pods",socializing|rest,0.04
+30,S16,K,"Kitten mew — commonly used by K-pod",socializing|rest,0.07
+31,S16,L,"Kitten mew — shared across all pods",socializing|rest,0.04
+32,S17,K,"K-pod specific call",travel|foraging,0.04
+33,S18,K,"K-pod specific call",socializing|travel,0.03
+34,S19,J,"Shared J+L",socializing,0.04
+35,S19,L,"L-pod exclusive in Ford 1991, now observed in J+L",socializing,0.05
+36,S22,L,"Post-Ford catalogue addition",socializing|foraging,0.02
+37,S30,J,"Post-Ford catalogue addition",socializing,0.02
+38,S31,J,"Post-Ford catalogue addition",travel,0.02
+39,S33,L,"Post-Ford catalogue addition",socializing,0.02
+40,S34,K,"Post-Ford catalogue addition",foraging,0.02
+41,S36,L,"Post-Ford catalogue addition",travel|socializing,0.02
+42,S40,K,"Post-Ford catalogue addition",socializing,0.01
+43,S42,J,"High-frequency component similar to S13",foraging|socializing,0.03
+44,S44,L,"Post-Ford catalogue addition",socializing|foraging,0.02
+45,S45,K,"Post-Ford catalogue addition",travel,0.01
+46,S46,J,"Post-Ford catalogue addition",socializing,0.01

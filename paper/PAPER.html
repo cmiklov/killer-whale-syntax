@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topological Syntax in Killer Whale Communication</title>
+    <style>
+@page {
+    size: A4;
+    margin: 2.5cm;
+}
+
+body {
+    font-family: "Times New Roman", Times, Georgia, serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    max-width: 42em;
+    margin: 0 auto;
+    padding: 2em;
+    color: #1a1a1a;
+}
+
+h1 {
+    font-size: 18pt;
+    text-align: center;
+    margin-bottom: 0.2em;
+    page-break-before: avoid;
+}
+
+h1 + h3 {
+    text-align: center;
+    font-weight: normal;
+    font-style: italic;
+    font-size: 12pt;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+h3 + p > strong:first-child {
+    /* Author line */
+}
+
+/* Author block centering */
+h3 + p, h3 + p + p, h3 + p + p + p {
+    text-align: center;
+}
+
+h2 {
+    font-size: 14pt;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    border-bottom: none;
+}
+
+h3 {
+    font-size: 12pt;
+    margin-top: 1.2em;
+    margin-bottom: 0.4em;
+}
+
+p {
+    text-align: justify;
+    margin-bottom: 0.8em;
+    text-indent: 0;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+}
+
+th, td {
+    border: 1px solid #999;
+    padding: 4px 8px;
+    text-align: left;
+}
+
+th {
+    background: #f0f0f0;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background: #fafafa;
+}
+
+code {
+    font-family: "Courier New", monospace;
+    font-size: 10pt;
+    background: #f5f5f5;
+    padding: 1px 3px;
+}
+
+em {
+    font-style: italic;
+}
+
+strong {
+    font-weight: bold;
+}
+
+ol, ul {
+    margin-bottom: 0.8em;
+}
+
+li {
+    margin-bottom: 0.3em;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 2em 0;
+}
+
+/* Section numbers */
+h1 {
+    counter-reset: h2counter;
+}
+
+/* Page breaks before major sections */
+h1:not(:first-of-type) {
+    page-break-before: always;
+}
+
+/* Abstract styling */
+h2:first-of-type + p {
+    font-size: 11pt;
+}
+
+/* Title page */
+.title-page {
+    page-break-after: always;
+    text-align: center;
+    padding-top: 20%;
+}
+
+.title-page h1 {
+    font-size: 22pt;
+    margin-bottom: 0.3em;
+}
+
+.title-page h3 {
+    font-size: 13pt;
+    font-weight: normal;
+    font-style: italic;
+    margin-bottom: 2em;
+}
+
+.title-page p {
+    text-align: center;
+    font-size: 12pt;
+}
+
+/* Table of contents */
+nav.toc {
+    page-break-after: always;
+    margin-top: 4em;
+}
+
+nav.toc h2 {
+    text-align: center;
+    font-size: 16pt;
+}
+
+nav.toc ol {
+    list-style: none;
+    padding-left: 0;
+    font-size: 12pt;
+    line-height: 2.2;
+}
+
+nav.toc li {
+    border-bottom: none;
+    overflow: hidden;
+}
+
+nav.toc li a {
+    display: block;
+    overflow: hidden;
+}
+
+nav.toc a {
+    text-decoration: none;
+    color: #1a1a1a;
+}
+
+/* References */
+h1:last-of-type ~ p {
+    text-indent: -2em;
+    padding-left: 2em;
+    font-size: 10pt;
+    line-height: 1.4;
+}
+</style>
+</head>
+<body>
+<div class="title-page">
+<h1 id="topological-syntax-in-killer-whale-communication">Topological Syntax in Killer Whale Communication</h1>
+<h3>Acoustic proximity generates sequential structure across ecotypes</h3>
+<p><strong>Chad Mucklow</strong></p>
+<p>Independent researcher, Oxford, UK</p>
+<p><strong>Keywords:</strong> killer whale, <em>Orcinus orca</em>, topological syntax, reaction-diffusion, acoustic topology, sequential structure, mutual information, bioacoustics, DCLDE</p>
+
+</div>
+<nav class="toc">
+<h2>Contents</h2>
+<ol>
+<li><a href="#abstract">Abstract</a></li>
+<li><a href="#1-introduction">1. Introduction</a></li>
+<li><a href="#2-background-and-related-work">2. Background and Related Work</a></li>
+<li><a href="#3-data">3. Data</a></li>
+<li><a href="#4-methods">4. Methods</a></li>
+<li><a href="#5-results">5. Results</a></li>
+<li><a href="#6-discussion">6. Discussion</a></li>
+<li><a href="#7-conservation-applications">7. Conservation Applications</a></li>
+<li><a href="#8-limitations">8. Limitations</a></li>
+<li><a href="#9-conclusion">9. Conclusion</a></li>
+<li><a href="#references">References</a></li>
+</ol>
+</nav>
+<h2 id="abstract">Abstract</h2>
+<p>We present a novel analytical framework (reaction-diffusion topological analysis) applied to ~40,000 killer whale (<em>Orcinus orca</em>) vocalisations across four ecotypes from the DCLDE 2027 dataset (207,574 annotations, 23 locations, 2005-2023). The framework projects acoustic features into a dual semantic field (acoustic topology + behavioural context topology) and analyses sequential structure through information-theoretic and geometric methods.</p>
+<p>We report three principal findings. First, acoustic topology predicts sequential structure: calls that are acoustically similar tend to follow each other in temporal sequences (Cohen&rsquo;s d = 1.34-1.57 across three ecotypes, p ≈ 0), and this relationship follows a Boltzmann distribution (R² = 0.98, p = 0.005 against within-session permutation null for SRKW) with ecotype-specific coupling strengths. This constitutes <strong>topological syntax</strong>: a form of grammar generated by proximity in acoustic space rather than by abstract categorical rules, fundamentally different from the categorical syntax of human language.</p>
+<p>Second, killer whale sequential memory is unprecedented among non-human animals. Mutual information half-life reaches 45.4 calls in Bigg&rsquo;s transients, 6–15× longer than any previously measured non-human species (Kershenbaum et al., 2014), and Markov order exceeds 4. (Note: direct comparison to the human MI half-life of 3–8 words (Shannon, 1951) is complicated by unit mismatch, as orca calls are behavioural analogues of utterances or conversational turns, not individual words. The non-human comparison uses equivalent units.) Communication strategy correlates with ecological niche: stealth-hunting transients show the tightest topological coupling (d = 1.57) and longest memory, while socially-oriented Southern Alaska residents show the highest vocabulary diversity but minimal sequential structure.</p>
+<p>Third, acoustic monitoring detects ecological stress in real time. During the 2018-2019 Chinook salmon shortage, Southern Resident killer whales shifted their communication along every measured dimension (bandwidth +327.6%, p = 7.2 × 10⁻²⁹⁶), and this shift was population-specific, absent in the Southern Alaska resident control group (JSD 20× smaller). The grammar did not degrade under stress; it reorganised into an alternative regime with 33% lower conditional entropy.</p>
+<p>Additional findings include: all tested linguistic universals hold (Zipf&rsquo;s law, brevity law, Heaps&rsquo; law); calls and whistles occupy statistically distinct frequency bands (p = 1.77 × 10⁻¹⁴), confirming multi-channel architecture; day and night communication regimes differ in both vocabulary diversity (5.7×) and sequential structure (2.2×) within a single population; and conversations exhibit narrative arcs (open-focus-close coherence trajectories) with 95% of sessions returning to their onset call type.</p>
+<p>The framework independently verified 8 published findings without prior knowledge of the expected results, self-replicated its core finding across 3 ecotypes and 2 independent datasets, and produced 5 honest null results, including 2 retracted findings (29 and 43) identified as timestamp artifacts during internal review. All 54 findings (52 standing, 2 retracted), 30 analysis scripts, and extracted feature datasets are publicly available for reproduction.</p>
+<p>These results suggest that killer whale communication constitutes a topological language: a system where acoustic form generates sequential function through a continuous field topology, sustained over unprecedented timescales by the largest cortical surface area of any mammal. Human language and orca communication represent orthogonal solutions to the problem of complex communication: human language excels at vocabulary, compression, and referential abstraction; orca communication excels at sequential memory, topological coherence, and perceptual coordination.</p>
+<hr />
+<h1 id="1-introduction">1. Introduction</h1>
+<p>The quantitative study of non-human vocal communication has historically relied on categorical classification: assigning call types, measuring repertoire size, and testing for non-random sequential structure at low Markov orders (Kershenbaum et al., 2014). This approach has established that many species produce structured vocal sequences (Gentner &amp; Margoliash, 2003; Ouattara et al., 2009; Suzuki et al., 2006), but has consistently found sequential dependencies limited to orders 1–3, with mutual information (MI) half-lives of 3–8 units across all non-human species measured (Kershenbaum et al., 2014; Janik, 2000).</p>
+<p>Killer whales (<em>Orcinus orca</em>) present a compelling case for deeper analysis. They possess the largest brain of any odontocete (Marino et al., 2004), a paralimbic cortical lobe absent in humans that integrates emotional and cognitive processing (Marino et al., 2007), and an elaborated insular cortex and temporal operculum whose functional significance remains poorly understood (Marino et al., 2016). Their vocal repertoire has been extensively catalogued: Ford (1987, 1991) identified 16–18 discrete call types per pod in Southern Resident killer whales (SRKW), culturally transmitted across generations (Deecke et al., 2000). Yet the <em>sequential structure</em> of these calls (what follows what, and why) has received comparatively little quantitative attention at the population scale.</p>
+<p>This paper introduces a topological approach to orca vocal analysis grounded in reaction-diffusion (R/D) dynamics. The analytical framework draws on Turing&rsquo;s (1952) foundational demonstration that two interacting substances (an activator and an inhibitor, diffusing at different rates) spontaneously generate stable spatial patterns from homogeneous initial conditions. In <em>The Chemical Basis of Morphogenesis</em>, Turing showed that pattern formation requires no blueprint: structure emerges from the interaction dynamics alone. The Gray-Scott model (Gray &amp; Scott, 1984) parameterised this dynamic for continuous systems, producing the well-characterised zoo of spots, stripes, and labyrinthine patterns that have since been identified in contexts ranging from embryonic development to sand dune formation.</p>
+<p>We apply this principle not to spatial patterns but to <em>acoustic topology</em>. Each call type occupies a position in a high-dimensional feature space defined by its spectral and temporal properties. R/D dynamics operating on this space identify basins of attraction, natural clusters the system converges to without imposed category boundaries. The critical test is <em>topological syntax</em>: whether acoustic proximity between call types predicts their sequential adjacency in natural vocal sequences.</p>
+<p>We analyse approximately 40,000 killer whale calls across four ecotypes (SRKW, Bigg&rsquo;s/Transient, Southern Alaska Resident, and Offshore) spanning 18 years of hydrophone recordings from the DCLDE 2027 dataset (Myers et al., 2025), supplemented by Ford-Osborne call exemplars (Ford, 1987; Orcasound, 2018) and 4,862 individually extracted calls from Haro Strait.</p>
+<p>The principal findings are:</p>
+<ol>
+<li>Acoustic topology predicts sequential syntax with a large effect size (Cohen&rsquo;s <em>d</em> = 1.34–1.57) across three independently analysed ecotypes.</li>
+<li>Sequential memory, measured by MI half-life, reaches 45.4 calls in Bigg&rsquo;s transients, 6–15× longer than any previously measured non-human species.</li>
+<li>Markov order exceeds 4 for both SRKW and Bigg&rsquo;s, placing orca vocal sequences within the human language range (5–7).</li>
+<li>During the 2019 Chinook salmon crisis, SRKW communication reorganised into an alternative grammatical regime (<em>p</em> = 10⁻²⁹⁶), confirmed as population-specific by a natural experiment control.</li>
+<li>All tested linguistic statistical universals (Zipf&rsquo;s law, the brevity law, Heaps&rsquo; law) hold for orca vocal sequences.</li>
+</ol>
+<p>These results suggest that orca vocal communication is not a simpler version of human language on the same complexity axis, but an <em>orthogonal</em> system, one that trades vocabulary and abstraction for unprecedented sequential coherence and direct coupling between acoustic form and syntactic function. We propose the term <em>topological syntax</em> for this mode of communication, in which the geometry of the signal space generates the grammar.</p>
+<p>The R/D framework used here follows Turing&rsquo;s original insight: we do not impose structure on the data. We provide the conditions (two interacting fields, acoustic and contextual) and observe what stabilises. The patterns that emerge are the findings.</p>
+<hr />
+<h1 id="2-background-and-related-work">2. Background and Related Work</h1>
+<h2 id="21-killer-whale-vocal-behaviour">2.1 Killer Whale Vocal Behaviour</h2>
+<p>Killer whales produce three acoustically distinct categories of vocalisation: pulsed calls (broadband, 1–6 kHz fundamental), tonal whistles (narrowband, 3–12 kHz), and echolocation clicks (broadband impulses). Ford (1987, 1991) catalogued the discrete pulsed call repertoire of Southern Resident killer whales (SRKW) in British Columbia, identifying call types S01–S19 distributed across three matrilineal pods (J, K, L). Pod-specific repertoires are culturally transmitted, calves acquire their natal pod&rsquo;s dialect during the first years of life, and repertoires persist across generations with minimal drift (Deecke et al., 2000).</p>
+<p>Four genetically and behaviourally distinct ecotypes inhabit the northeastern Pacific: Southern Residents (SRKW), Northern Residents (NRKW), Bigg&rsquo;s transients (TKW), and Offshore killer whales (OKW). A fifth population, Southern Alaska Residents (SAR), is genetically close to NRKW but occupies a distinct range. These ecotypes differ in social structure, prey specialisation, and acoustic behaviour. SRKW and SAR live in large matrilineal pods and hunt fish; TKW travel in small groups of 2–6 and hunt marine mammals by acoustic ambush; OKW are poorly understood but are associated with deep-water prey including sharks (Ford et al., 2011).</p>
+<p>The ecological divergence between ecotypes produces divergent acoustic constraints. Bigg&rsquo;s transients hunt acoustically aware prey, marine mammals that can detect and flee from killer whale vocalisations. This imposes a stealth constraint: TKW are largely silent during hunting, vocalising primarily during and after kills (Barrett-Lennard et al., 1996; Deecke et al., 2005). Resident ecotypes hunt fish, which lack the auditory sensitivity to detect killer whale calls, imposing no comparable constraint. These differing selection pressures predict measurably different communication strategies, a prediction tested directly in this study.</p>
+<h2 id="22-sequential-structure-in-animal-communication">2.2 Sequential Structure in Animal Communication</h2>
+<p>The study of sequential structure in animal vocalisations has established that many species produce non-random call sequences. Kershenbaum et al. (2014) reviewed the field and found Markov structure at orders 1–3 across taxa including birds (Gentner &amp; Margoliash, 2003), cetaceans (Janik, 2000; Rendell &amp; Whitehead, 2003), and primates (Ouattara et al., 2009; Gustison et al., 2012). Bergman (2013) identified speech-like lip-smacking rhythms in geladas. Suzuki et al. (2006) measured information entropy in humpback whale song. Sharma et al. (2024) demonstrated contextual and combinatorial structure in sperm whale codas.</p>
+<p>A consistent finding across this literature is that sequential dependencies in non-human vocal communication are shallow. Mutual information between adjacent calls decays rapidly, half-lives of 3–8 units are typical (Kershenbaum et al., 2014). No non-human species has previously been shown to maintain sequential coherence beyond approximately 8 vocal units, and Markov orders above 3 have not been reported.</p>
+<p>Shannon (1951) established the information-theoretic framework for measuring sequential structure in human language, estimating English at approximately 1 bit per character with dependencies extending over spans of 5–8 characters. Cover and Thomas (2006) formalised the mathematical tools (marginal entropy, conditional entropy, mutual information) now standard in comparative communication analysis. These measures are substrate-independent: they quantify structure without requiring knowledge of meaning, making them applicable across species.</p>
+<h2 id="23-linguistic-statistical-universals">2.3 Linguistic Statistical Universals</h2>
+<p>Several statistical regularities documented in human language have been tested in non-human communication systems. Zipf&rsquo;s law (Zipf, 1949) (the power-law relationship between word frequency and rank) has been found in dolphin whistle repertoires (McCowan et al., 1999, 2002) and birdsong (Sainburg et al., 2019). The brevity law (Zipf, 1935), the inverse correlation between signal frequency and duration, holds across multiple taxa. Heaps&rsquo; law (Heaps, 1978) (the sublinear growth of vocabulary with corpus size) has been less systematically tested in non-human systems. Menzerath&rsquo;s law, the inverse relationship between construct length and constituent length, has been reported in some primate vocal sequences.</p>
+<p>The presence of these universals is necessary but not sufficient for linguistic structure. Zipf&rsquo;s law in particular can arise from simple stochastic processes (Miller, 1957). Their diagnostic value lies in their <em>joint</em> presence alongside independent evidence of sequential structure, a combination that constrains the class of generative mechanisms capable of producing the observed data.</p>
+<h2 id="24-cetacean-neuroanatomy">2.4 Cetacean Neuroanatomy</h2>
+<p>The killer whale brain provides the anatomical substrate for a complex communication system. At approximately 6,200 cm³, it is the largest odontocete brain by absolute volume (Marino et al., 2004). Cortical surface area reaches 3,745 cm², exceeding all other mammals, with extensive gyrification (Marino et al., 2016).</p>
+<p>Three neuroanatomical features are directly relevant to the acoustic findings presented in this paper.</p>
+<p>First, cetaceans possess a <strong>paralimbic lobe</strong>, an entire cortical region situated between the limbic system and the neocortex that has no homologue in the human brain (Marino et al., 2007). Marino describes it as enabling &ldquo;very rapid formation of integrated perceptions with a richness of information unimaginable to us.&rdquo; This structure provides a neural substrate for the integration of emotional state and communicative behaviour, relevant to our finding that SRKW shift grammatical regime under ecological stress (Section 5.7).</p>
+<p>Second, the <strong>insular cortex and temporal operculum</strong> are massively elaborated in killer whales relative to all other species examined, including other cetaceans (Marino et al., 2004, 2016). In humans, the insular cortex processes auditory information; the temporal operculum includes regions homologous to Broca&rsquo;s area. Marino et al. (2016) specifically identified the killer whale temporal opercular region as requiring &ldquo;extensive future study&rdquo; due to its unprecedented development. This elaboration is consistent with the processing demands implied by the 20 ms dominant inter-call interval documented in this study, a rate of 51.3 Hz requiring rapid auditory discrimination.</p>
+<p>Third, diffusion tensor imaging has revealed <strong>direct overlap of auditory and visual thalamic pathways</strong> in cetacean brains (Berns et al., 2015). Unlike the human brain, where auditory and visual processing streams remain largely segregated until cortical association areas, the cetacean thalamus merges acoustic and spatial information <em>before cortical processing begins</em>. This is not a minor architectural variant. It means that acoustic input (including echolocation returns) is processed through fused audio-visual hardware at the thalamic level. An orca does not hear an echo and subsequently construct a spatial representation; the acoustic processing <em>is</em> spatial processing. Every pod member within acoustic range who hears another individual&rsquo;s echolocation return processes it through the same fused pathway. The implication is a <strong>distributed perceptual field</strong>, a shared spatial model of the environment, updated continuously by every individual&rsquo;s sonar, processed as vision by every receiver.</p>
+<p>This three-channel architecture, syntactically structured calls for coordination, individually distinctive whistles for attribution, and echolocation clicks for shared spatial perception, frames the communication system analysed in this paper as one component of a distributed cognitive system rather than an isolated signalling behaviour.</p>
+<h2 id="25-reaction-diffusion-as-an-analytical-framework">2.5 Reaction-Diffusion as an Analytical Framework</h2>
+<p>Turing (1952), in <em>The Chemical Basis of Morphogenesis</em>, demonstrated that a system of two diffusing chemical substances, an activator produced autocatalytically and an inhibitor produced in response, can generate stable spatial patterns from homogeneous initial conditions, provided the inhibitor diffuses faster than the activator. This mechanism requires no template, no blueprint, and no external instruction. Pattern emerges from the interaction dynamics alone.</p>
+<p>Gray and Scott (1984) parameterised this dynamic for the continuously stirred tank reactor, producing a two-parameter model (feed rate <em>F</em>, kill rate <em>k</em>) that generates the full taxonomy of R/D patterns: spots, stripes, waves, spirals, and chaotic regimes. The Gray-Scott model has since been applied across scales from embryonic morphogenesis to geochemical pattern formation.</p>
+<p>We apply the Gray-Scott R/D model not to spatial chemistry but to acoustic topology. Each vocalisation is a point in a high-dimensional feature space. The activator-inhibitor dynamic identifies basins of attraction in this space, stable clusters that the system converges to from arbitrary initial conditions. This approach is model-free in the sense that no category count or cluster shape is imposed <em>a priori</em>; the R/D dynamics find whatever structure is present.</p>
+<p>The critical extension beyond clustering is the connection between topology and temporal sequence. If acoustic proximity between call types predicts their sequential adjacency in natural vocal sequences (if calls that sound similar tend to follow each other) then the topology of the acoustic space is not merely a description of the communication system but a <em>generative mechanism</em>. The geometry of the signal space would produce the grammar. This is the central hypothesis tested in this paper.</p>
+<hr />
+<h1 id="3-data">3. Data</h1>
+<p>Three datasets were used, each serving a distinct role in the analysis. The study proceeded iteratively, initial findings on catalogue exemplars motivated extraction of per-call features from progressively larger and more independent datasets.</p>
+<h2 id="31-ford-osborne-call-catalogue">3.1 Ford-Osborne Call Catalogue</h2>
+<p>Ford (1987, 1991) classified SRKW discrete pulsed calls into types S01–S19, with pod-specific repertoires for J, K, and L pods. Digitised audio exemplars of 29 call types were obtained from the Orcasound signals-srkw repository (CC BY-NC-SA 4.0), which hosts the Ford-Osborne 2018 recordings. Seven whistle exemplars (SW01–SW07) from the SRKW Whistle Catalog (Day, 2024) were used for multi-channel analysis.</p>
+<p>This dataset provides one high-quality recording per call type. It enabled the initial topology construction and cross-pod alignment (Section 5.1) but cannot support per-call statistical analysis. Its role in the study is foundational: it established that the R/D framework detects known structure, motivating the transition to per-call data.</p>
+<h2 id="32-dclde-2027-dataset">3.2 DCLDE 2027 Dataset</h2>
+<p>The Detection, Classification, Localisation, and Density Estimation (DCLDE) 2027 dataset (Myers et al., 2025; DOI: 10.25921/15ey-mh50) contains 207,574 call-level annotations from 23 hydrophone locations across the northeastern Pacific, spanning 2005–2023. Annotations include bounding boxes in time-frequency space (start time, end time, low frequency, high frequency), ecotype labels (SRKW, TKW, NRKW, SAR, OKW), and recording metadata. The dataset is publicly available under CC-BY 4.0.</p>
+<p>From the DCLDE annotations, three subsets were extracted:</p>
+<p><strong>Orcasound stations (577 calls).</strong> Individual call segments extracted from three simultaneously operating hydrophones in the Salish Sea (Orcasound Lab: 332 calls; Bush Point: 211 calls; Port Townsend: 34 calls). These provided the first per-call acoustic features and enabled station-independence validation (Section 5.2).</p>
+<p><strong>Haro Strait (4,862 calls).</strong> SRKW calls extracted from two simultaneous JASCO hydrophones in Haro Strait, core J/K/L pod territory. This is the primary independent validation dataset. Its role is to test whether findings from the Orcasound subset replicate on a 9× larger sample from different recording infrastructure (Section 5.3).</p>
+<p><strong>Full annotation corpus.</strong> Call-level annotations (without audio extraction) for all ecotypes: SRKW (14,240), TKW (4,121), SAR (8,078), OKW (1,495). Annotation metadata (center frequency, bandwidth, duration) were used for cross-ecotype information-theoretic analysis (Sections 5.4–5.6). An additional 2,453 TKW and 1,255 OKW calls were extracted with full acoustic features for the topology-syntax analysis (Section 5.8).</p>
+<p>Total calls analysed across all subsets: approximately 40,000 across four ecotypes and 18 years.</p>
+<h2 id="33-data-limitations">3.3 Data Limitations</h2>
+<p>NRKW annotations in the DCLDE are detection-level only (8,266 presence/absence tags) and lack the individual call annotations required for sequential or information-theoretic analysis. Northern Residents are therefore absent from this study despite their relevance as a comparison population.</p>
+<p>Behavioural metadata in the DCLDE is limited to annotation bounding boxes (low frequency, high frequency, duration). Per-call activity tags (foraging, socialising, travelling, resting) are not available. This constrains the phonosemantic analysis reported in Section 5.1: the type-level correlation between acoustic form and behavioural function (r = 0.77 on Ford-Osborne exemplars) could not be replicated at the call level using available metadata (r = 0.025 on Haro Strait data). The limitation is in the metadata resolution, not the acoustic features, a point discussed in Section 8.</p>
+<p>The DORI dataset (Nestor et al., 2026; 919 hours of curated SRKW recordings) was identified during the study but not integrated. It may contain richer per-call metadata suitable for resolving the phonosemantic question at the call level.</p>
+<hr />
+<h1 id="4-methods">4. Methods</h1>
+<p>The methodology evolved over the course of the study. Initial analyses (Section 5.1) used 42-dimensional features from catalogue exemplars; subsequent analyses (Sections 5.2–5.8) used 50-dimensional features extracted from individual call recordings. This section describes the final methodology as applied to the per-call datasets. Where the catalogue-level analysis differed, those differences are noted in the relevant results section.</p>
+<h2 id="41-acoustic-feature-extraction">4.1 Acoustic Feature Extraction</h2>
+<p>Individual call segments were extracted from DCLDE 2027 audio files using annotation bounding boxes (start time, end time, low frequency, high frequency). Audio was loaded at 22,050 Hz mono via librosa (McFee et al., 2015). For each call, a 50-dimensional feature vector was computed across six feature groups:</p>
+<table>
+<thead>
+<tr>
+<th>Feature group</th>
+<th>Dimensions</th>
+<th>Extraction method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spectral shape</td>
+<td>6</td>
+<td>Centroid, bandwidth, rolloff, flux, contrast, flatness (librosa spectral features, normalised by Nyquist frequency)</td>
+</tr>
+<tr>
+<td>Temporal envelope</td>
+<td>5</td>
+<td>Soft classification into pulsed, tonal, mixed, burst, and silence modes from RMS energy and zero-crossing rate coefficient of variation</td>
+</tr>
+<tr>
+<td>Click/tonal ratio</td>
+<td>2</td>
+<td>Onset strength ratio (onset envelope mean / max) as proxy for impulsive vs sustained energy</td>
+</tr>
+<tr>
+<td>FM contour</td>
+<td>3</td>
+<td>pYIN pitch tracking (Mauch &amp; Dixon, 2014): mean F0 (normalised by 10 kHz ceiling), modulation depth (F0 coefficient of variation), modulation rate (mean</td>
+</tr>
+<tr>
+<td>Structural/context</td>
+<td>8</td>
+<td>Duration (seconds) + annotation metadata (pod, behavioural context flags where available)</td>
+</tr>
+<tr>
+<td>Spectral fingerprint</td>
+<td>26</td>
+<td>Mean log-mel energy across 26 frequency bands (librosa mel spectrogram, power-to-dB, min-max normalised per call)</td>
+</tr>
+</tbody>
+</table>
+<p>The first 42 dimensions (spectral, temporal, click/tonal, FM, fingerprint) constitute the acoustic features; the remaining 8 are structural/contextual. This separation enables independent analysis of acoustic form and communicative function.</p>
+<p>For the annotation-only analyses (Sections 5.4–5.6), where individual audio was not extracted, a reduced 3-dimensional feature vector was derived from annotation metadata: center frequency, bandwidth, and duration. These were normalised to [0, 1] range per ecotype.</p>
+<h2 id="42-station-normalisation">4.2 Station Normalisation</h2>
+<p>Different hydrophone installations have different frequency responses, environmental noise floors, and propagation characteristics. To isolate call-level acoustic structure from recording artifacts, per-station z-score normalisation was applied: for each feature dimension, the station mean was subtracted and the result divided by the station standard deviation. This removes systematic station-specific biases while preserving within-station and between-call variation.</p>
+<p>Validation criterion: after normalisation, acoustic clusters must span all recording stations. If clusters remain station-specific after normalisation, the features are capturing recording conditions rather than call structure. This criterion was met at 100% for both the Orcasound (3 stations) and Haro Strait (2 stations) datasets.</p>
+<h2 id="43-clustering">4.3 Clustering</h2>
+<p>Unsupervised k-means clustering (scikit-learn; random_state=42, n_init=10) was applied at multiple granularities:</p>
+<ul>
+<li><strong>k = 2</strong>: Optimal for cross-ecotype annotation metadata (silhouette score maximisation). Used for ecotype comparison (Section 5.4).</li>
+<li><strong>k = 3</strong>: Optimal for station-normalised Orcasound per-call features. Used for syntax, temporal, information-theoretic, and crisis analyses (Sections 5.2–5.7).</li>
+<li><strong>k = 5</strong>: Used for linguistic universal analyses (Section 5.6), where finer granularity is required for meaningful Zipf and Heaps statistics.</li>
+</ul>
+<p>No cluster count was imposed <em>a priori</em>. In each case, silhouette scores were computed for k = 2 through k = 10 and the maximum selected. The relative ranking of ecotypes on information-theoretic measures (Section 5.5) is stable across k = 2, 3, and 5.</p>
+<h2 id="44-sequence-construction">4.4 Sequence Construction</h2>
+<p>Temporal sequences were constructed from calls within recording sessions. Calls were ordered by start time within each session. A maximum inter-call gap of 30 seconds was imposed: consecutive calls separated by more than 30 seconds were treated as belonging to separate sequences. This threshold balances sensitivity (shorter gaps miss slow exchanges) against specificity (longer gaps conflate independent bouts).</p>
+<h2 id="45-reaction-diffusion-attractor-identification">4.5 Reaction-Diffusion Attractor Identification</h2>
+<p>Acoustic feature vectors were projected to 64 dimensions via seeded Johnson-Lindenstrauss random projection (Johnson &amp; Lindenstrauss, 1984) and normalised to unit length on the hypersphere. For the dual-field analysis (catalogue-level, Section 5.1), two independent projections were computed, one for the 42 acoustic dimensions and one for the 8 contextual dimensions, with the combined field formed as a weighted blend (0.6 acoustic, 0.4 context), re-normalised.</p>
+<p>Attractor identification used Gray-Scott reaction-diffusion dynamics (Gray &amp; Scott, 1984) operating on the projected space. The R/D model treats each call-type vector as a potential attractor. Given an initial activation (a point in the 64-dimensional space), the dynamics iteratively apply:</p>
+<ol>
+<li><strong>Reaction</strong>, the field state is pulled toward the nearest attractor (diffusion_rate = 0.1)</li>
+<li><strong>Inhibition</strong>, competing attractors exert a weaker pull weighted by their similarity to the current state</li>
+<li><strong>Feed</strong>, amplitude-dependent growth (feed_rate = 0.04)</li>
+<li><strong>Kill</strong>, amplitude-dependent decay (kill_rate = 0.06)</li>
+<li><strong>Normalisation</strong>, the state is re-projected to unit length after each step</li>
+</ol>
+<p>Convergence was defined as ‖Δstate‖ &lt; 10⁻⁴ or 200 steps, whichever came first. The parameters (dt = 0.01, diffusion_rate = 0.1, feed_rate = 0.04, kill_rate = 0.06) are identical to those used in the parent framework and were not tuned for this dataset.</p>
+<h3>Analytical role of the R/D framework</h3>
+<p>The R/D attractor identification (Section 4.5) serves two functions in this study: (1) it provides the blind catalogue validation against Ford (1991) reported in Section 5.1, and (2) it motivates the central hypothesis that acoustic topology generates sequential structure. The population-scale findings (Sections 5.2–5.8) are tested using standard information-theoretic and non-parametric statistical methods (Sections 4.7–4.9), k-means clustering, mutual information, Mann-Whitney U, Jensen-Shannon divergence, chi-squared tests, and exponential regression. These methods were chosen precisely because they are well-understood, reproducible, and independent of the R/D framework. The R/D dynamics generate the hypothesis; conventional statistics test it. This separation ensures that the findings do not depend on the validity of the R/D model itself.</p>
+<h2 id="46-cross-population-alignment">4.6 Cross-Population Alignment</h2>
+<p>Orthogonal Procrustes analysis (Schönemann, 1966) was used to align acoustic spaces across pods and ecotypes. For two populations A and B with call-type vectors in 64-dimensional space, the optimal orthogonal rotation R minimising ‖AR − B‖² was computed via SVD of B^T A. Because pod repertoires (12–18 call types) are underdetermined in 64 dimensions, vectors were first reduced to 5 dimensions via PCA. Disparity was computed as the Frobenius norm of the residual after alignment, normalised by the number of aligned points.</p>
+<p>Validation: for each aligned pair, context agreement was measured, the fraction of aligned call-type pairs sharing at least one behavioural context tag (foraging, socialising, travelling, resting). High context agreement indicates that the rotation maps functionally equivalent calls to each other, not just acoustically similar ones.</p>
+<h2 id="47-information-theoretic-measures">4.7 Information-Theoretic Measures</h2>
+<p>Following Shannon (1951) and Cover and Thomas (2006):</p>
+<ul>
+<li><strong>Marginal entropy</strong> H(X) = −Σ p(x) log₂ p(x), computed from cluster frequency distributions. Measures repertoire diversity in bits per call.</li>
+<li><strong>Conditional entropy</strong> H(X_{t+1} | X_t, &hellip;, X_{t−k}) at Markov orders k = 0 through k = 4, computed from n-gram transition counts. Measures residual uncertainty about the next call given k previous calls.</li>
+<li><strong>Mutual information</strong> MI = H(X) − H(X_{t+1} | X_t). Measures how much the previous call reduces uncertainty about the next.</li>
+<li><strong>Normalised MI</strong> (MI/H): the fraction of total information that is sequential. Enables cross-ecotype and cross-species comparison independent of repertoire size.</li>
+<li><strong>MI decay</strong>: MI computed at lags 1 through 11. Fitted with an exponential decay model MI(lag) = a · exp(−b · lag). Half-life = ln(2) / b.</li>
+</ul>
+<p>Non-random sequential structure was tested via chi-squared test on the transition matrix against the null hypothesis of independence (expected counts from marginal probabilities).</p>
+<h2 id="48-topology-syntax-coupling">4.8 Topology-Syntax Coupling</h2>
+<p>The central hypothesis (that acoustic topology predicts sequential adjacency) was tested by comparing the distribution of pairwise acoustic similarities for calls that are <em>sequentially adjacent</em> in natural sequences against calls that are <em>not adjacent</em>.</p>
+<p>For each pair of consecutive calls (i, i+1) in the corpus, the cosine similarity between their 50-dimensional feature vectors was computed. The distribution of these <em>adjacent-pair similarities</em> was compared against the distribution of similarities for all non-adjacent pairs via Cohen&rsquo;s <em>d</em> (standardised mean difference) and the Mann-Whitney U test.</p>
+<p>To characterise the relationship at different similarity thresholds, the enrichment ratio was computed: (fraction of adjacent pairs above threshold) / (fraction of all pairs above threshold). An enrichment ratio of 1.0 indicates no relationship between topology and syntax; values above 1.0 indicate that acoustically similar calls are over-represented among sequential pairs.</p>
+<p>This analysis was performed independently for SRKW (Haro Strait, 4,862 calls), TKW (2,453 calls), and OKW (1,255 calls).</p>
+<h2 id="49-statistical-tests">4.9 Statistical Tests</h2>
+<p>All p-values are two-sided unless otherwise noted. Non-parametric tests (Mann-Whitney U, chi-squared) were preferred throughout due to the non-normal distributions typical of acoustic data. Effect sizes (Cohen&rsquo;s <em>d</em>, Pearson&rsquo;s <em>r</em>) are reported alongside p-values. Jensen-Shannon divergence (symmetric, bounded [0, 1]) was used for distribution comparisons across time periods and ecotypes. Bonferroni correction was not applied to the ecotype comparisons, as each ecotype analysis addresses an independent biological question rather than multiple tests of a single hypothesis; however, the reported p-values (10⁻⁷² to 10⁻²⁹⁶) are robust to any reasonable correction.</p>
+<h2 id="410-reproducibility">4.10 Reproducibility</h2>
+<p>All analysis scripts are publicly available. Each script is self-contained and reproduces the findings from raw data with fixed random seeds (random_state=42 throughout). The analytical pipeline requires Python 3.8+, numpy, scipy, scikit-learn, and librosa. Feature extraction from audio additionally requires soundfile. The 74-test suite validates all engine components on synthetic data. Data access: DCLDE 2027 via NOAA (DOI: 10.25921/15ey-mh50); Ford-Osborne exemplars via Orcasound signals-srkw (github.com/orcasound/signals-srkw).</p>
+<hr />
+<h1 id="5-results">5. Results</h1>
+<h2 id="51-validation-on-known-ground-truth">5.1 Validation on Known Ground Truth</h2>
+<p>Before presenting novel findings, we validate the framework against published results that the analysis was not given.</p>
+<p><strong>Dialect proximity.</strong> Ford (1991) established that J-pod and L-pod are the closest SRKW dialect pair, sharing call types (S02, S04, S10, S19) not used by K-pod. Procrustes alignment of pod-level acoustic spaces re-derives this ranking without any prior information about dialect relationships:</p>
+<table>
+<thead>
+<tr>
+<th>Alignment</th>
+<th>Disparity</th>
+<th>Context agreement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>J ↔ L</strong></td>
+<td><strong>0.456</strong></td>
+<td><strong>0.88</strong></td>
+</tr>
+<tr>
+<td>J ↔ K</td>
+<td>0.527</td>
+<td>0.58</td>
+</tr>
+<tr>
+<td>K ↔ L</td>
+<td>0.652</td>
+<td>0.92</td>
+</tr>
+</tbody>
+</table>
+<p>J and L pods have the lowest disparity and 88% context agreement, the fraction of aligned call pairs sharing at least one behavioural context. K-pod is the outlier: smallest repertoire (12 entries vs J&rsquo;s 16 and L&rsquo;s 18), highest alignment disparity with L-pod, most pod-specific calls.</p>
+<p><strong>Contact call identification.</strong> When R/D dynamics are initialised from arbitrary co-activations of call types across pods, the field converges to S01, the discrete pulsed call documented as the primary contact call (Ford, 1991), present in all three pods, all four behavioural contexts, comprising 25–30% of all recorded calls. The framework identifies the most important signal in the repertoire from topology alone.</p>
+<p><strong>Repertoire structure.</strong> The engine recovers Ford&rsquo;s pod repertoire classification exactly: 6 call types shared across all three pods (S01, S03, S06, S07, S12, S16), 4 shared exclusively between J and L (S02, S04, S10, S19), and the correct count of pod-specific types (J: 6, K: 6, L: 8).</p>
+<p><strong>Phonosemantic correlation.</strong> At the catalogue level, acoustic and contextual distances correlate at r = 0.77 (Pearson, pairwise distances in 42D acoustic vs 8D context space), call types used in similar behavioural contexts share similar spectral properties. This correlation was subsequently tested at the individual call level (Section 5.3) and revised to r = 0.025, a result discussed in Section 8.</p>
+<p>These validation results, correct dialect ranking, correct contact call identification, exact repertoire recovery, were obtained from structural analysis alone. The framework was not informed of the published answers.</p>
+<h2 id="52-station-independent-acoustic-structure">5.2 Station-Independent Acoustic Structure</h2>
+<p>To move from catalogue exemplars (one recording per call type) to population-level statistics, 577 individual call segments were extracted from three Orcasound hydrophones in the Salish Sea.</p>
+<p>Raw clustering (k = 7 optimal) revealed recording artifacts: 4 of 7 clusters were station-specific, reflecting hydrophone frequency response rather than call identity. After per-station z-score normalisation (Section 4.2), the optimal cluster count dropped to k = 3, and all three clusters spanned all three recording stations at 100%.</p>
+<table>
+<thead>
+<tr>
+<th>Cluster</th>
+<th>Calls</th>
+<th>Stations represented</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>251</td>
+<td>3/3</td>
+</tr>
+<tr>
+<td>1</td>
+<td>178</td>
+<td>3/3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>148</td>
+<td>3/3</td>
+</tr>
+</tbody>
+</table>
+<p>The spectral diversity across 577 calls is substantial: centroid mean 3,291 Hz (std 529 Hz), duration mean 2.02 s (std 0.83 s). PCA reveals that station normalisation increases effective dimensionality from 5 to 14 components for 90% variance explained, removing station effects uncovers finer acoustic structure that was previously masked.</p>
+<h2 id="53-sequential-syntax">5.3 Sequential Syntax</h2>
+<p>The 577 Orcasound calls, temporally ordered within recording sessions (max inter-call gap 30 s), show highly non-random transition structure:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>→ C0</th>
+<th>→ C1</th>
+<th>→ C2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>C0 →</strong></td>
+<td><strong>0.831</strong></td>
+<td>0.076</td>
+<td>0.093</td>
+</tr>
+<tr>
+<td><strong>C1 →</strong></td>
+<td>0.087</td>
+<td><strong>0.750</strong></td>
+<td>0.163</td>
+</tr>
+<tr>
+<td><strong>C2 →</strong></td>
+<td>0.174</td>
+<td>0.167</td>
+<td><strong>0.659</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Chi-squared = 432.19 (df = 4, <em>p</em> &lt; 10⁻⁶). Self-transition rate 0.762, against 0.350 expected under independence. Calls of the same acoustic type follow each other more than twice as often as chance predicts.</p>
+<p><strong>Markov depth.</strong> Full-scale analysis on 11,079 bigram transitions from 838 SRKW recording sessions confirms the syntax finding at 20× scale (χ² = 2,617, <em>p</em> ≈ 0). Conditional entropy continues to decrease through Markov order 4 without plateauing:</p>
+<table>
+<thead>
+<tr>
+<th>Order</th>
+<th>H(next | context)</th>
+<th>Reduction from order 0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.1249 bits</td>
+<td>,</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0.1077 bits</td>
+<td>13.7%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.0961 bits</td>
+<td>23.1%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.0872 bits</td>
+<td>30.2%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.0810 bits</td>
+<td>35.1%</td>
+</tr>
+</tbody>
+</table>
+<p>At order 4, knowing the last five calls reduces uncertainty about the next call by 35% compared to base rate. The reduction has not plateaued, implying Markov order exceeds 4. Previously reported non-human Markov orders peak at 1–3 (Kershenbaum et al., 2014). This places orca vocal sequences within the human language range (5–7; Shannon, 1951). Session-level bootstrap (1,000 iterations resampling sessions with replacement, Miller-Madow corrected) confirms the order-3→4 reduction is robust to sparse-estimation artifacts: 95% CIs at k=3 [0.003, 0.009] and k=5 [0.021, 0.034] both exclude zero, surviving even at k=5 where 625 possible context states are observed in a finite corpus.</p>
+<p>Trigram analysis (10,241 trigrams) reveals structural embedding: the interjection pattern C0→C2→C0 (a different call type inserted into a sustained bout, after which the bout resumes) occurs at 0.75%, nearly identical to the return pattern C2→C0→C0 (0.74%). When a call interrupts a sequence, the sequence recovers. This is functionally analogous to parenthetical embedding in human syntax.</p>
+<p><strong>Independent replication.</strong> All syntax findings replicate on the Haro Strait dataset (4,862 calls, 2 JASCO hydrophones): χ² = 1,756 (<em>p</em> ≈ 0), 100% station independence after normalisation. Cross-station sequence matching on 11 simultaneously recorded call sequences shows 70.6% position-match accuracy (random expectation: 50.3%), confirming that the detected structure exists in the acoustic signal, not in the clustering procedure.</p>
+<h2 id="54-cross-ecotype-communication-strategies">5.4 Cross-Ecotype Communication Strategies</h2>
+<p>Analysis of the full DCLDE annotation corpus reveals that all four ecotypes converge on a binary acoustic structure (k = 2 optimal by silhouette score in each case), but the acoustic content of those two modes differs dramatically:</p>
+<table>
+<thead>
+<tr>
+<th>Ecotype</th>
+<th>N</th>
+<th>Center freq (Hz)</th>
+<th>Duration (s)</th>
+<th>Social structure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SRKW</td>
+<td>12,298</td>
+<td>3,554 ± 3,482</td>
+<td>1.00 ± 0.72</td>
+<td>Large matrilineal pods</td>
+</tr>
+<tr>
+<td>TKW</td>
+<td>3,146</td>
+<td>2,191 ± 2,543</td>
+<td>1.96 ± 1.07</td>
+<td>Small transient groups</td>
+</tr>
+<tr>
+<td>SAR</td>
+<td>7,996</td>
+<td>4,755 ± 2,514</td>
+<td>0.85 ± 0.36</td>
+<td>Large resident pods</td>
+</tr>
+<tr>
+<td>OKW</td>
+<td>1,491</td>
+<td>3,302 ± 2,595</td>
+<td>1.17 ± 0.57</td>
+<td>Poorly known</td>
+</tr>
+</tbody>
+</table>
+<p>Cross-ecotype Procrustes alignment reveals SRKW as the acoustic outlier:</p>
+<table>
+<thead>
+<tr>
+<th>Alignment</th>
+<th>Disparity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OKW ↔ SAR</td>
+<td>0.20</td>
+</tr>
+<tr>
+<td>SAR ↔ TKW</td>
+<td>0.39</td>
+</tr>
+<tr>
+<td>OKW ↔ TKW</td>
+<td>0.47</td>
+</tr>
+<tr>
+<td>SAR ↔ SRKW</td>
+<td>0.62</td>
+</tr>
+<tr>
+<td>SRKW ↔ TKW</td>
+<td>0.62</td>
+</tr>
+<tr>
+<td>OKW ↔ SRKW</td>
+<td>0.67</td>
+</tr>
+</tbody>
+</table>
+<p>SRKW, the most socially complex population and the only one critically endangered, has the most acoustically distinct communication of any ecotype.</p>
+<h2 id="55-information-theoretic-profiles">5.5 Information-Theoretic Profiles</h2>
+<p>The information-theoretic analysis reveals that communication complexity is not a single axis but at least two orthogonal dimensions: repertoire diversity (marginal entropy) and sequential structure (normalised mutual information).</p>
+<table>
+<thead>
+<tr>
+<th>Ecotype</th>
+<th>H(X) bits</th>
+<th>H(X|prev) bits</th>
+<th>MI bits</th>
+<th>MI/H</th>
+<th>Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TKW</td>
+<td>0.92</td>
+<td>0.69</td>
+<td>0.24</td>
+<td><strong>25.5%</strong></td>
+<td>Rich grammar, rich vocabulary</td>
+</tr>
+<tr>
+<td>SRKW</td>
+<td>0.16</td>
+<td>0.13</td>
+<td>0.04</td>
+<td><strong>23.6%</strong></td>
+<td>Rich grammar, compressed vocabulary</td>
+</tr>
+<tr>
+<td>OKW</td>
+<td>1.16</td>
+<td>0.94</td>
+<td>0.22</td>
+<td>19.1%</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>SAR</td>
+<td>1.31</td>
+<td>1.24</td>
+<td>0.07</td>
+<td><strong>5.6%</strong></td>
+<td>Minimal grammar, richest vocabulary</td>
+</tr>
+</tbody>
+</table>
+<p>SRKW and SAR occupy opposite extremes. SRKW communication is dominated by a single call type (97.8% C0) with 23.6% of information carried sequentially, a compressed vocabulary with rich positional grammar, analogous to agglutinative human languages (Turkish, Japanese). SAR uses three call types in roughly equal proportion (35%/56%/9%) with only 5.6% sequential structure, a diverse vocabulary with minimal grammar, analogous to isolating languages (Mandarin, Vietnamese).</p>
+<p>This mapping between communication strategy and ecological niche is consistent with the selection pressures described in Section 2.1. SRKW coordinate Chinook salmon pursuit through complex waterways; precise positional signalling outweighs vocabulary diversity. SAR inhabit open waters with different prey dynamics; a larger repertoire of distinct signals serves social functions more than hunting coordination.</p>
+<p>Bigg&rsquo;s transients show the richest profile on both dimensions: highest MI/H (25.5%) <em>and</em> substantial vocabulary diversity (H = 0.92 bits). Their stealth constraint (hunting acoustically aware prey) selects for maximum information density per vocalisation.</p>
+<p><strong>Mutual information decay</strong> reveals the most striking result. MI was computed at lags 1 through 11 and fitted with exponential decay:</p>
+<table>
+<thead>
+<tr>
+<th>Ecotype</th>
+<th>MI/H at lag 1</th>
+<th>Half-life (calls)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TKW</strong></td>
+<td><strong>53.5%</strong></td>
+<td><strong>45.4</strong></td>
+</tr>
+<tr>
+<td><strong>SRKW</strong></td>
+<td><strong>17.8%</strong></td>
+<td><strong>24.1</strong></td>
+</tr>
+<tr>
+<td>SAR</td>
+<td>4.8%</td>
+<td>10.5</td>
+</tr>
+</tbody>
+</table>
+<p>No previously measured non-human species has shown sequential memory beyond approximately 8 units (Kershenbaum et al., 2014; Janik, 2000; Gentner &amp; Margoliash, 2003). Bigg&rsquo;s transients maintain statistically detectable sequential coherence over 45 calls, a span of approximately 3 minutes at their median inter-call interval of 4.1 seconds, exceeding any previously measured non-human species by a factor of 6–15. Shannon (1951) reported MI half-lives of 3–8 words for written English, but this comparison is not unit-equivalent: orca calls (duration 0.85–1.96 s, median ICI 2.5–4.1 s) are behavioural analogues of utterances or conversational turns, not individual words. Human MI measured over conversational turns would likely yield substantially longer half-lives. The non-human comparison (which uses equivalent call-level units across species) is the valid benchmark.</p>
+<p>At lag 1, 53.5% of all Bigg&rsquo;s call information is sequential, more than half of what a transient orca vocalises is determined by its recent call history. This is the most sequentially structured communication system measured in any species.</p>
+<h2 id="56-linguistic-statistical-universals">5.6 Linguistic Statistical Universals</h2>
+<p>Three established statistical universals of human language were tested across ecotypes.</p>
+<p><strong>Zipf&rsquo;s law</strong> (Zipf, 1949). All ecotypes show power-law rank-frequency distributions:</p>
+<table>
+<thead>
+<tr>
+<th>Ecotype</th>
+<th>α</th>
+<th>R²</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SAR</td>
+<td>1.11</td>
+<td>0.68</td>
+</tr>
+<tr>
+<td>TKW</td>
+<td>2.61</td>
+<td>0.72</td>
+</tr>
+<tr>
+<td>SRKW</td>
+<td>4.29</td>
+<td>0.90</td>
+</tr>
+</tbody>
+</table>
+<p>SAR&rsquo;s exponent (α = 1.11) is within the range observed in natural human languages (α ≈ 1.0). SRKW&rsquo;s steeper exponent reflects the dominance of a single call type (C0 at 97.8%).</p>
+<p><strong>Brevity law</strong> (Zipf, 1935). More frequent call types have shorter durations across all ecotypes:</p>
+<table>
+<thead>
+<tr>
+<th>Ecotype</th>
+<th>r</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SAR</td>
+<td>−0.82</td>
+</tr>
+<tr>
+<td>SRKW</td>
+<td>−0.75</td>
+</tr>
+<tr>
+<td>TKW</td>
+<td>−0.33</td>
+</tr>
+</tbody>
+</table>
+<p>SAR&rsquo;s r = −0.82 is comparable to values reported for human text corpora (typically −0.5 to −0.9).</p>
+<p><strong>Heaps&rsquo; law</strong> (Heaps, 1978). Vocabulary grows sublinearly with corpus size. SRKW β = 0.35 falls within the human range (0.4–0.6). New call types continue to appear as the corpus grows, but at a decelerating rate, the hallmark of a productive system with a finite but expandable repertoire.</p>
+<p><strong>Bout structure.</strong> Each ecotype shows distinct grammatical roles within sequences. In SRKW, cluster C4 starts and ends 69% of sequences, functioning as a sentence boundary marker. In TKW, C4 and C1 alternate in structured pairs (216 + 206 transitions), resembling call-and-response. In SAR, three-way alternation with no dominant pair, consistent with the isolating typology.</p>
+<h2 id="57-ecological-stress-response">5.7 Ecological Stress Response</h2>
+<p>The 2018–2019 Chinook salmon shortage, the worst on record for SRKW, during which J35 (Tahlequah) carried her dead calf for 17 days, produced a measurable shift in SRKW acoustic behaviour across every dimension analysed:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>2019 (n = 1,163)</th>
+<th>Other years (n = 11,135)</th>
+<th>Change</th>
+<th><em>p</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Center frequency</td>
+<td>6,889 ± 8,608 Hz</td>
+<td>3,205 ± 2,090 Hz</td>
+<td>+114.9%</td>
+<td>1.7 × 10⁻⁷²</td>
+</tr>
+<tr>
+<td>Bandwidth</td>
+<td>12,006 ± 16,781 Hz</td>
+<td>2,808 ± 3,404 Hz</td>
+<td>+327.6%</td>
+<td>7.2 × 10⁻²⁹⁶</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>1.45 s</td>
+<td>0.95 s</td>
+<td>+52.2%</td>
+<td>1.6 × 10⁻¹²⁶</td>
+</tr>
+</tbody>
+</table>
+<p>C2 usage spiked from &lt;2% to 13.8%; C1, entirely absent in other years, appeared at 3.4%. Self-transition rate dropped from 0.975 to 0.867.</p>
+<p><strong>Natural experiment control.</strong> The critical test: does the 2019 shift appear in other ecotypes recorded with the same annotation pipeline?</p>
+<table>
+<thead>
+<tr>
+<th>Ecotype</th>
+<th>JSD (2019 vs other)</th>
+<th>Center freq Δ</th>
+<th>Bandwidth Δ</th>
+<th>Duration Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SRKW</strong></td>
+<td><strong>0.076</strong></td>
+<td><strong>+114.9%</strong></td>
+<td><strong>+327.6%</strong></td>
+<td><strong>+52.2%</strong></td>
+</tr>
+<tr>
+<td>SAR</td>
+<td>0.004</td>
+<td>−1.9%</td>
+<td>−3.2%</td>
+<td>−7.3%</td>
+</tr>
+<tr>
+<td>TKW</td>
+<td>0.033</td>
+<td>+22.4%</td>
+<td>+41.3%</td>
+<td>−24.2%</td>
+</tr>
+</tbody>
+</table>
+<p>SRKW&rsquo;s Jensen-Shannon divergence is 20× larger than SAR&rsquo;s. SAR, a healthy resident population recorded with the same pipeline, shows effectively no shift. The direction of SAR&rsquo;s trivial changes is <em>opposite</em> to SRKW&rsquo;s. TKW shows a moderate shift consistent with the Lombard effect (Holt et al., 2008), higher frequency but <em>shorter</em> duration, the opposite of SRKW&rsquo;s duration increase. This rules out recording artifacts, ocean noise, and annotation protocol changes.</p>
+<p><strong>Grammar reorganisation.</strong> Counter-intuitively, 2019 SRKW sequences became <em>more</em> predictable, not less. Conditional entropy dropped 33.1% (0.819 → 0.548 bits). The transition matrix inverted: C1 became the self-reinforcing state (C1→C1 = 0.927, vs 0.181 in other years), and C0→C1 became the dominant transition (0.522, vs 0.001). The grammar did not break down under stress. It reorganised around a different attractor, an alternative communication regime that was more predictable but structured around different transition patterns.</p>
+<p>This finding is consistent with the paralimbic cortical lobe described by Marino et al. (2007): the recognition of ecological crisis (cognition) triggered an alternative communication protocol (behaviour) mediated by emotional state, exactly the kind of integrated cognitive-emotional response that a paralimbic lobe would support.</p>
+<h2 id="58-topological-syntax">5.8 Topological Syntax</h2>
+<p>The central finding. For each pair of consecutive calls in natural sequences, the cosine similarity of their 50-dimensional acoustic feature vectors was compared against the similarity distribution of non-adjacent pairs.</p>
+<table>
+<thead>
+<tr>
+<th>Ecotype</th>
+<th>N calls</th>
+<th>Cohen&rsquo;s <em>d</em></th>
+<th><em>p</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SRKW</strong></td>
+<td>4,862</td>
+<td><strong>1.34</strong></td>
+<td>≈ 0</td>
+</tr>
+<tr>
+<td><strong>TKW</strong></td>
+<td>2,453</td>
+<td><strong>1.57</strong></td>
+<td>≈ 0</td>
+</tr>
+<tr>
+<td><strong>OKW</strong></td>
+<td>1,255</td>
+<td><strong>1.51</strong></td>
+<td>10⁻²⁰¹</td>
+</tr>
+</tbody>
+</table>
+<p>All three ecotypes, analysed independently, from different recording locations and years, show large-effect topology-syntax coupling. Calls that sound similar follow each other. The effect is strongest in Bigg&rsquo;s transients (<em>d</em> = 1.57), consistent with their stealth constraint selecting for maximally efficient acoustic coding.</p>
+<p>At similarity ≥ 0.90, sequentially adjacent pairs are <strong>136× more frequent</strong> than expected by chance (SRKW enrichment ratio). The enrichment-similarity relationship follows a Boltzmann distribution. Permutation testing (1,000 within-session shuffles preserving session membership but breaking sequential adjacency) confirms that the fit exceeds the null for SRKW (observed R² = 0.98, null 95th percentile = 0.979, <em>p</em> = 0.005). For TKW and OKW, R² falls within the permutation null, but the coupling <em>slope</em> exceeds the null in both cases (TKW: 4.33 vs 3.81; OKW: 3.49 vs 3.09), indicating that the strength of topology-syntax coupling is real even where goodness-of-fit alone does not distinguish from the null. Cross-session shuffling (assigning calls to random sessions) destroys the fit entirely for all ecotypes (<em>p</em> = 0.000), confirming that the Boltzmann structure requires session-level sequential organisation.</p>
+<p>A previously reported fast/slow response timing analysis (Finding 43) was retracted during internal review. The 50-100 ms inter-call intervals used in that analysis were identified as artifacts of the Haro Strait <code>FileBeginSec</code> timestamps (see Section 8, Limitations). The topology-syntax result (d = 1.34-1.57) does not depend on timing; it is computed from similarity distributions of sequentially adjacent calls regardless of inter-call interval.</p>
+<p>Session-level trajectories show conversational arcs: coherence rises from session start (0.600) to a mid-session peak (0.642) before declining at session end (0.592), an open-focus-close structure analogous to human conversational organisation (<em>p</em> = 0.075, marginal).</p>
+<p><strong>The interpretation.</strong> Acoustic topology does not merely describe orca communication. It predicts its sequential structure with a large, replicable effect across three genetically distinct ecotypes spanning 8,570 independently analysed calls. The geometry of the signal space generates the grammar. We propose the term <strong>topological syntax</strong> for this mode of communication.</p>
+<p>This is fundamentally different from human language, where phonological form and syntactic function are arbitrarily related (Saussure, 1916). In human language, the sound of a word does not predict what word comes next. In orca communication, it does, with <em>d</em> &gt; 1.3 across all populations tested. Human language achieves its power through abstraction: separating form from function enables recursion, displacement, and compositional semantics. Orca communication achieves its power through continuity: fusing form and function enables unprecedented sequential coherence (MI half-life 6–15× human) at the cost of the categorical abstraction that human language exploits.</p>
+<p>These are not different points on the same complexity axis. They are orthogonal solutions to the problem of coordinating behaviour through acoustic signals.</p>
+<hr />
+<h1 id="6-discussion">6. Discussion</h1>
+<h2 id="61-topological-syntax-as-a-distinct-mode-of-communication">6.1 Topological Syntax as a Distinct Mode of Communication</h2>
+<p>The central finding of this study, that acoustic topology predicts sequential structure with Cohen&rsquo;s <em>d</em> = 1.34–1.57 across three independently analysed ecotypes, identifies a mode of communication not previously described. We term this <em>topological syntax</em>: a system in which the geometry of the signal space generates the grammar directly, without an intervening layer of categorical abstraction.</p>
+<p>Human language is characterised by the <em>arbitrariness of the sign</em> (Saussure, 1916): the phonological form of a word bears no systematic relationship to its syntactic role or sequential position. &ldquo;Cat&rdquo; does not sound like &ldquo;dog&rdquo; despite occupying identical syntactic slots. This separation of form from function is what enables recursion, displacement, and compositional semantics, the defining features of human language (Chomsky, 1957; Hockett, 1960).</p>
+<p>Orca communication, as measured here, operates on a different principle. Acoustic form <em>is</em> syntactic function. Calls that sound similar follow each other, not occasionally, but with a large, replicable effect verified across 8,570 calls from three genetically distinct populations. At the highest similarity thresholds (≥ 0.90), sequential adjacency is 136× more frequent than chance. The topology does not describe the grammar; it <em>produces</em> it.</p>
+<p>This distinction has a precedent in Turing&rsquo;s (1952) framework. In reaction-diffusion systems, pattern emerges not from a template but from the interaction dynamics of the substrate. The activator-inhibitor dynamic does not encode the pattern, it generates it. Similarly, orca topological syntax does not encode sequential rules, the acoustic topology generates sequential structure as a consequence of the signal space geometry. The grammar is an emergent property of the medium, not a separate layer imposed upon it.</p>
+<p>We note that the R/D framework&rsquo;s contribution to this study is primarily conceptual. It motivated the hypothesis that acoustic topology generates syntax, and it provided the attractor identification used for blind catalogue validation (Section 5.1). The population-scale findings, topology-syntax coupling, MI half-life, Markov order, crisis detection, linguistic universals, were all tested using standard information-theoretic and non-parametric statistical methods (see Section 4.5, &ldquo;Analytical role of the R/D framework&rdquo;). The R/D model is the hypothesis generator; conventional statistics are the hypothesis validators. The findings stand independently of whether one accepts the R/D interpretation.</p>
+<h3>Alternative hypothesis: acoustic priming</h3>
+<p>The topology-syntax result (that acoustically similar calls tend to follow each other) admits an alternative explanation: acoustic priming. Animals may simply repeat similar sounds due to production inertia, articulatory constraints, or shared physiological state. If adjacent calls are produced by the same individual, self-repetition alone could generate the observed similarity enrichment. Self-transitions do dominate (0.80–0.97 across ecotypes), consistent with this concern.</p>
+<p>Three independent tests rule out priming as the sole explanation:</p>
+<ol>
+<li>
+<p><strong>Cross-transition exclusion.</strong> After removing all self-repetitions (68–83% of pairs), the topology-syntax effect persists with large effect sizes: <em>d</em> = 1.27 (SRKW), 1.49 (TKW), 0.91 (OKW). Priming cannot operate on pairs where the call type changes.</p>
+</li>
+<li>
+<p><strong>Cross-voice pairs.</strong> Within SRKW sessions containing an estimated 2.9 voices, topology-syntax coupling holds across speaker boundaries (<em>d</em> = 0.93, n = 2,365 cross-voice pairs). One individual&rsquo;s call predicts another individual&rsquo;s subsequent call; this is coordination, not self-repetition.</p>
+</li>
+<li>
+<p><strong>Cross-station pairs.</strong> Calls recorded at different hydrophone locations (likely different individuals) show medium-large topology-syntax coupling (<em>d</em> = 0.67, n = 3,095 cross-station response pairs).</p>
+</li>
+</ol>
+<p>The effect is reduced but not eliminated after controlling for priming, consistent with a model where both priming (self-repetition maintaining acoustic consistency) and topological syntax (acoustic proximity driving cross-individual sequential structure) contribute to the observed pattern. The cross-individual tests confirm that topological syntax operates beyond what priming alone can explain.</p>
+<h2 id="62-the-orthogonality-of-human-and-orca-communication">6.2 The Orthogonality of Human and Orca Communication</h2>
+<p>The five principal dimensions of communication complexity, vocabulary diversity, compression efficiency, sequential memory, syntactic depth, and form-syntax coupling, reveal that human language and orca communication occupy orthogonal regions of the space:</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Human language</th>
+<th>Orca (TKW)</th>
+<th>Orca (SRKW)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vocabulary (H₀)</td>
+<td>~4.7 bits</td>
+<td>0.9 bits</td>
+<td>0.2 bits</td>
+</tr>
+<tr>
+<td>Compression (H₀/H₄)</td>
+<td>~4.7×</td>
+<td>1.8×</td>
+<td>1.9×</td>
+</tr>
+<tr>
+<td>Sequential memory (MI t½)</td>
+<td>3–8 words†</td>
+<td><strong>45.4 calls</strong></td>
+<td><strong>24.1 calls</strong></td>
+</tr>
+<tr>
+<td>Syntactic depth (Markov)</td>
+<td>5–7</td>
+<td><strong>&gt;4</strong></td>
+<td><strong>&gt;4</strong></td>
+</tr>
+<tr>
+<td>Form-syntax coupling (<em>d</em>)</td>
+<td>~0</td>
+<td><strong>1.57</strong></td>
+<td><strong>1.34</strong></td>
+</tr>
+</tbody>
+</table>
+<p>†Human MI half-life is measured over lexical tokens in written text (Shannon, 1951); orca MI is measured over calls (duration 0.85–1.96 s). Calls are behavioural analogues of utterances or conversational turns, not individual words. The values are not unit-equivalent; the non-human comparison (6–15× longer than any other species, using call-level units) is the valid benchmark.</p>
+<p>Human language dominates on vocabulary and compression. Orca communication dominates on sequential memory and form-syntax coupling. Neither system is &ldquo;more complex&rdquo;, they are complex in <em>different dimensions</em>.</p>
+<p>The analogy is structural, not metaphorical. A symphony and a novel are both complex artefacts. A symphony achieves complexity through sustained temporal coherence across multiple simultaneous channels, exactly the orca profile. A novel achieves complexity through referential depth and compositional abstraction, exactly the human profile. Asking which is &ldquo;more complex&rdquo; is a category error. They solve different problems.</p>
+<h2 id="63-neuroanatomical-substrate">6.3 Neuroanatomical Substrate</h2>
+<p>The findings are consistent with three features of cetacean neuroanatomy documented by Marino et al. (2004, 2007, 2016) and Hof and Van der Gucht (2005).</p>
+<p>The <strong>paralimbic lobe</strong>, a cortical region absent in humans that integrates emotional and cognitive processing, provides a substrate for the ecological stress response documented in Section 5.7. SRKW did not merely increase call rate or amplitude during the 2019 prey crisis; they switched to an entirely different grammatical regime (33% lower conditional entropy, reorganised transition matrix, new dominant attractor). This is not a stress reflex. It is cognitive-emotional integration: recognising a crisis, selecting an alternative communication protocol, and maintaining that protocol coherently across the population.</p>
+<p>The <strong>elaborated insular cortex and temporal operculum</strong> provide the processing capacity for the temporal structure documented throughout Section 5. The 45-call MI half-life (Section 5.5) requires maintaining a running model of the preceding ~3 minutes of communication. The cortical surface area of 3,745 cm² (the largest of any mammal) provides the working memory substrate for this sustained sequential coherence. The median inter-call interval of 2-4 seconds implies a conversational turn-taking timescale of 0.25-0.5 Hz, consistent with the processing demands of sustained sequential coherence rather than rapid neural oscillation.</p>
+<p>The <strong>thalamic audio-visual convergence</strong> documented by Berns et al. (2015) reframes the entire communication system. In the cetacean brain, auditory and visual thalamic pathways overlap before cortical processing begins. Echolocation returns are processed through fused audio-visual hardware, the acoustic signal <em>is</em> a spatial percept at the neural level. Every pod member within acoustic range processes every other individual&rsquo;s sonar returns through this fused pathway, producing a distributed spatial model updated continuously by the entire group.</p>
+<p>The three-channel architecture described in Section 2.4, syntactically structured calls for coordination, individually distinctive whistles for attribution, echolocation clicks for shared spatial perception, constitutes a distributed cognitive system. The pod is not a collection of individuals exchanging messages. It is a network of brains sharing a perceptual field, coordinating behaviour through topological syntax, and attributing signals to individuals through signature whistles.</p>
+<h2 id="64-ecological-predictions">6.4 Ecological Predictions</h2>
+<p>The information-theoretic profiles (Section 5.5) predict ecotype-specific communication strategies from ecological constraints:</p>
+<p><strong>Bigg&rsquo;s transients</strong> hunt acoustically aware prey. Every vocalisation risks alerting the target. Prediction: minimal acoustic output, maximum information per emission, longest sequential coherence. Observed: median ICI 4.1 s (slowest), MI/H = 53.5% (highest), MI half-life 45.4 calls (longest). The stealth protocol, maximum coherence, minimum exposure.</p>
+<p><strong>SRKW</strong> hunt Chinook salmon, which cannot detect killer whale calls. No stealth constraint. Prediction: faster call rate, compressed vocabulary optimised for positional coordination. Observed: median ICI 2.5 s, H₀ = 0.16 bits (most compressed vocabulary), MI/H = 23.6% (rich positional grammar).</p>
+<p><strong>SAR</strong> occupy open water with different social dynamics. Prediction: high vocabulary diversity for social signalling, low sequential structure. Observed: median ICI 1.4 s (fastest), H₀ = 1.31 bits (richest vocabulary), MI/H = 5.6% (minimal grammar).</p>
+<p>These predictions are testable: changes in prey availability or social structure should produce measurable shifts along the vocabulary-grammar axes. The 2019 SRKW crisis (Section 5.7) provides the first natural experiment confirming this.</p>
+<hr />
+<h1 id="7-conservation-applications">7. Conservation Applications</h1>
+<p>The 2019 prey crisis acoustic shift (<em>p</em> = 7.2 × 10⁻²⁹⁶ on bandwidth alone), confirmed as SRKW-specific by the SAR control, demonstrates that passive acoustic monitoring can detect population-level stress in real time.</p>
+<p>Specific indicators derivable from hydrophone data:</p>
+<table>
+<thead>
+<tr>
+<th>Indicator</th>
+<th>Baseline (normal)</th>
+<th>Stress threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cluster distribution</td>
+<td>&gt;98% C0</td>
+<td>C2 &gt; 5%</td>
+</tr>
+<tr>
+<td>Bandwidth</td>
+<td>~2,800 Hz</td>
+<td>&gt;5,000 Hz</td>
+</tr>
+<tr>
+<td>Self-transition rate</td>
+<td>~0.975</td>
+<td>&lt;0.90</td>
+</tr>
+<tr>
+<td>Grammar regime</td>
+<td>C0-dominated</td>
+<td>C1-dominated</td>
+</tr>
+</tbody>
+</table>
+<p>The monitoring infrastructure already exists. The Orcasound hydrophone network streams 24/7 from multiple Salish Sea locations. The JASCO/VFPA hydrophones provide additional coverage. The analysis pipeline described in this paper is reproducible and computationally inexpensive, clustering and transition analysis on a day&rsquo;s recordings completes in seconds on consumer hardware.</p>
+<p>For a population of approximately 75 individuals classified as Endangered under both the U.S. Endangered Species Act and Canada&rsquo;s Species at Risk Act, real-time acoustic welfare monitoring could be operationally deployed using the framework presented here and existing recording infrastructure, without visual surveys, without boat-based observation, without weather windows.</p>
+<hr />
+<h1 id="8-limitations">8. Limitations</h1>
+<p><strong>Phonosemantic correlation.</strong> The type-level correlation between acoustic form and behavioural function (r = 0.77 on Ford-Osborne exemplars) did not replicate at the individual call level (r = 0.025 on 4,862 Haro Strait calls). The limitation is in the available metadata: DCLDE annotations provide time-frequency bounding boxes (3 dimensions), not per-call behavioural context tags. The acoustic features capture call identity with high fidelity, cross-station same-event similarity reaches 0.9715, and cluster separation (between/within distance ratio 1.83×) is strong. Richer behavioural metadata (per-call activity tags: foraging, socialising, travelling, resting) would provide the proper test. The DORI dataset (Nestor et al., 2026) may contain such metadata.</p>
+<p><strong>Clustering granularity.</strong> The analyses use k-means at k = 2, 3, or 5 depending on silhouette optimisation and analytical requirements. While relative ecotype rankings are stable across cluster counts, absolute entropy and MI values depend on k. The topology-syntax analysis (Section 5.8) operates on raw 50-dimensional feature vectors and is independent of clustering.</p>
+<p><strong>Annotation metadata.</strong> Cross-ecotype comparisons (Sections 5.4–5.5) rely on annotation-derived features (center frequency, bandwidth, duration) rather than full 50-dimensional acoustic features. TKW and OKW topology-syntax analyses use full features; cross-ecotype information-theoretic profiles use annotation metadata. Full acoustic feature extraction for all ecotypes would strengthen these comparisons.</p>
+<p><strong>Northern Residents.</strong> NRKW annotations in the DCLDE are detection-level only. This study cannot assess NRKW communication structure despite its relevance as a comparison population (genetically close to SAR, ecologically similar to SRKW).</p>
+<p><strong>Semantic content.</strong> This study identifies structural properties of orca vocal sequences, syntax, memory, universals, topology-syntax coupling. It does not and cannot determine what individual calls <em>mean</em>. The transition matrix predicts what follows what; it does not explain why. Semantic content requires experimental manipulation (playback studies with behavioural response measurement) beyond the scope of passive acoustic analysis.</p>
+<p><strong>Timestamp artifacts.</strong> Two findings were retracted during internal review due to timestamp resolution artifacts in the Haro Strait dataset. Finding 29 (20 ms dominant ICI, implying 51.3 Hz acoustic processing) was identified as a property of the <code>FileBeginSec</code> annotation coordinate within 30-minute recording files: only 0.2% of DCLDE annotations show ICIs in the 15–20 ms bin, versus 62–64% in the Haro-derived data. Finding 43 (50–100 ms &ldquo;fast response&rdquo; mode, 95.4% of cross-station transitions) used the same timestamps and was retracted for the same reason. Neither retraction affects the core findings: topology-syntax coupling, MI half-life, Markov order, crisis detection, and linguistic universals are computed from acoustic similarity and cluster transition statistics, not from inter-call timing. We report these retractions as evidence of the self-correcting methodology applied throughout.</p>
+<p><strong>Causality.</strong> The topology-syntax correlation (<em>d</em> = 1.34–1.57) does not establish causation. The finding is consistent with topology <em>generating</em> syntax (our proposed interpretation), but is also consistent with a shared underlying cause producing both acoustic similarity and sequential adjacency. Experimental disambiguation, e.g., testing whether synthetic sequences violating topological predictions elicit different behavioural responses, would address this.</p>
+<hr />
+<h1 id="9-conclusion">9. Conclusion</h1>
+<p>We have presented a reaction-diffusion topological analysis of approximately 40,000 killer whale calls across four ecotypes and 18 years, grounded in Turing&rsquo;s (1952) foundational demonstration that stable pattern emerges from activator-inhibitor dynamics without external instruction.</p>
+<p>The principal findings are:</p>
+<ol>
+<li>
+<p><strong>Topological syntax is universal in orca communication.</strong> Acoustic proximity predicts sequential adjacency with Cohen&rsquo;s <em>d</em> = 1.34–1.57 across three independently analysed ecotypes (8,570 calls). This is a large effect, replicated across genetically distinct populations.</p>
+</li>
+<li>
+<p><strong>Orca sequential memory is unprecedented among non-human animals.</strong> MI half-life reaches 45.4 calls in Bigg&rsquo;s transients, 6–15× longer than any previously measured non-human species. Markov order exceeds 4. (Direct comparison to the human MI half-life of 3–8 words is complicated by unit mismatch, orca calls are closer to utterances than to words. The non-human comparison, which uses equivalent call-level units, is the valid benchmark.)</p>
+</li>
+<li>
+<p><strong>Communication strategy tracks ecology.</strong> Four ecotypes occupy different positions in a two-dimensional space of vocabulary diversity × sequential structure. Bigg&rsquo;s transients (stealth hunters) maximise both. SRKW (salmon hunters) compress vocabulary and enrich grammar. SAR (open-water residents) diversify vocabulary with minimal grammar.</p>
+</li>
+<li>
+<p><strong>Ecological stress produces grammatical reorganisation.</strong> During the 2019 Chinook salmon crisis, SRKW shifted to an alternative communication regime, lower entropy, reorganised transition matrix, different dominant attractor, confirmed as population-specific by a natural experiment control (<em>p</em> = 10⁻²⁹⁶).</p>
+</li>
+<li>
+<p><strong>All tested linguistic statistical universals hold.</strong> Zipf&rsquo;s law (SAR α = 1.11, within human range), the brevity law (r = −0.82), and Heaps&rsquo; law (β = 0.35, within human range).</p>
+</li>
+<li>
+<p><strong>Passive acoustic monitoring can detect population stress in real time</strong>, using existing hydrophone infrastructure and the analytical framework presented here.</p>
+</li>
+</ol>
+<p>These results suggest that orca vocal communication is not a simpler version of human language but an orthogonal system, one that trades categorical abstraction for topological continuity, achieving unprecedented sequential coherence through direct coupling between acoustic form and syntactic function. The R/D framework, following Turing&rsquo;s original insight, imposed no structure on the data. The patterns that stabilised are the findings.</p>
+<p>Turing demonstrated in 1952 that two interacting substances, diffusing at different rates, produce stable pattern from homogeneity, that structure requires no blueprint. Seventy-four years later, the same principle, applied to the acoustic topology of killer whale vocalisations, reveals that grammar requires no abstraction. The geometry of the signal space is sufficient. The pattern emerges from the interaction. It always did.</p>
+<hr />
+<h2 id="data-availability">Data Availability</h2>
+<p>The DCLDE 2027 dataset is publicly available from NOAA (DOI: 10.25921/15ey-mh50) under CC-BY 4.0. Ford-Osborne call exemplars are available from the Orcasound signals-srkw repository (github.com/orcasound/signals-srkw) under CC BY-NC-SA 4.0. Extracted feature datasets (Haro Strait, TKW, OKW) are included in the code repository.</p>
+<h2 id="code-availability">Code Availability</h2>
+<p>All analysis scripts, the orca-engine framework, and the 74-test validation suite are publicly available at github.com/cmiklov/Seladori/orca-engine. Each script is self-contained and reproduces its findings from raw data with fixed random seeds (random_state=42 throughout). The pipeline requires Python 3.8+, numpy, scipy, scikit-learn, and librosa.</p>
+<h2 id="ai-disclosure">AI Disclosure</h2>
+<p>Analysis scripts were developed with assistance from Claude (Anthropic, claude-opus-4-6). The paper text was drafted collaboratively with AI assistance and reviewed by the author. All scientific decisions, experimental design, interpretations, and claims are the author&rsquo;s. The internal pre-submission review (identifying and addressing four methodological vulnerabilities) was conducted with AI assistance and is documented in the repository.</p>
+<h2 id="competing-interests">Competing Interests</h2>
+<p>The author declares no competing interests.</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>The DCLDE 2027 dataset was compiled by Myers et al. (2025) and made available by NOAA. Ford-Osborne call exemplars were digitised and hosted by the Orcasound project. The Orcasound hydrophone network provides ongoing open-access acoustic monitoring of the Salish Sea. This work was conducted independently and received no external funding.</p>
+<hr />
+<h1 id="references">References</h1>
+<p>Barrett-Lennard, L.G., Ford, J.K.B., Heise, K.A. (1996). The mixed blessing of echolocation: differences in sonar use by fish-eating and mammal-eating killer whales. <em>Animal Behaviour</em>, 51(3), 553-565.</p>
+<p>Bergman, T.J. (2013). Speech-like vocalized lip-smacking in geladas. <em>Current Biology</em>, 23(7), R268-R269.</p>
+<p>Bergler, C. et al. (2019). ORCA-SPOT: An Automatic Killer Whale Sound Detection Toolkit Using Deep Learning. <em>Scientific Reports</em>, 9, 10997.</p>
+<p>Berns, G.S., Cook, P.F., Foxley, S., Jbabdi, S., Miller, K.L., Woolrich, M.W. (2015). Diffusion tensor imaging of dolphin brains reveals direct auditory pathway to temporal lobe. <em>Proceedings of the Royal Society B</em>, 282(1811).</p>
+<p>Bolen, M. (2024). SRKW Click Catalog. Orcasound. https://www.orcasound.net/portfolio/srkw-click-catalog/</p>
+<p>Chomsky, N. (1957). <em>Syntactic Structures</em>. Mouton.</p>
+<p>Cover, T.M., Thomas, J.A. (2006). <em>Elements of Information Theory</em>, 2nd edition. Wiley-Interscience.</p>
+<p>Day, L. (2024). SRKW Whistle Catalog. Orcasound.</p>
+<p>Deecke, V.B., Ford, J.K.B., Spong, P. (2000). Dialect change in resident killer whales: implications for vocal learning and cultural transmission. <em>Animal Behaviour</em>, 60(5), 629-638.</p>
+<p>Deecke, V.B., Ford, J.K.B., Slater, P.J.B. (2005). The vocal behaviour of mammal-eating killer whales: communicating with costly calls. <em>Animal Behaviour</em>, 69(2), 395-405.</p>
+<p>Ford, J.K.B. (1987). A catalogue of underwater calls produced by killer whales (<em>Orcinus orca</em>) in British Columbia. Canadian Data Report of Fisheries and Aquatic Sciences No. 633.</p>
+<p>Ford, J.K.B. (1989). Acoustic behaviour of resident killer whales (<em>Orcinus orca</em>) off Vancouver Island, British Columbia. <em>Canadian Journal of Zoology</em>, 67(3), 727-745.</p>
+<p>Ford, J.K.B. (1991). Vocal traditions among resident killer whales (<em>Orcinus orca</em>) in coastal waters of British Columbia. <em>Canadian Journal of Zoology</em>, 69(6), 1454-1483. DOI: 10.1139/z91-206</p>
+<p>Ford, J.K.B., Ellis, G.M., Matkin, C.O., Wetklo, M.H., Barrett-Lennard, L.G., Withler, R.E. (2011). Shark predation and tooth wear in a population of northeastern Pacific killer whales. <em>Aquatic Biology</em>, 11(3), 213-224.</p>
+<p>Gentner, T.Q., Margoliash, D. (2003). Neuronal populations and single cells representing learned auditory objects. <em>Nature</em>, 424(6949), 669-674.</p>
+<p>Gower, J.C. (1975). Generalized procrustes analysis. <em>Psychometrika</em>, 40(1), 33-51.</p>
+<p>Gray, P., Scott, S.K. (1984). Autocatalytic reactions in the isothermal, continuous stirred tank reactor. <em>Chemical Engineering Science</em>, 39(6), 1087-1097.</p>
+<p>Gustison, M.L., le Roux, A., Bergman, T.J. (2012). Derived vocalizations of geladas (<em>Theropithecus gelada</em>) and the evolution of vocal complexity in primates. <em>Philosophical Transactions of the Royal Society B</em>, 367(1597), 1847-1859.</p>
+<p>Heaps, H.S. (1978). <em>Information Retrieval: Computational and Theoretical Aspects</em>. Academic Press.</p>
+<p>Hockett, C.F. (1960). The origin of speech. <em>Scientific American</em>, 203(3), 88-96.</p>
+<p>Hof, P.R., Van der Gucht, E. (2005). Cortical complexity in cetacean brains. <em>The Anatomical Record Part A</em>, 287A(1). DOI: 10.1002/ar.a.20258</p>
+<p>Hof, P.R., Glezer, I.I., Nimchinsky, E.A., Erwin, J.M. (1992). The primary auditory cortex in cetacean and human brain: a comparative analysis of neurofilament protein-containing pyramidal neurons. <em>Neuroscience Letters</em>, 138(1).</p>
+<p>Holt, M.M. et al. (2008). Speaking up: Killer whales (<em>Orcinus orca</em>) increase their call amplitude in response to vessel noise. <em>Journal of the Acoustical Society of America</em>, 125(1).</p>
+<p>Holt, M.M. et al. (2013). Vocal performance affects metabolic rate in dolphins: implications for animals communicating in noisy environments. <em>Journal of Experimental Biology</em>.</p>
+<p>Janik, V.M. (2000). Whistle matching in wild bottlenose dolphins (<em>Tursiops truncatus</em>). <em>Science</em>, 289(5483), 1355-1357.</p>
+<p>Johnson, W.B., Lindenstrauss, J. (1984). Extensions of Lipschitz mappings into a Hilbert space. <em>Contemporary Mathematics</em>, 26, 189-206.</p>
+<p>Kershenbaum, A. et al. (2014). Acoustic sequences in non-human animals: a tutorial review and prospectus. <em>Biological Reviews</em>, 89(1), 135-152.</p>
+<p>Marino, L., Sherwood, C.C., Delman, B.N., Tang, C.Y., Naidich, T.P., Hof, P.R. (2004). Neuroanatomy of the killer whale (<em>Orcinus orca</em>) from magnetic resonance images. <em>The Anatomical Record Part A</em>, 281A(2), 1256-1263. DOI: 10.1002/ar.a.20075</p>
+<p>Marino, L., Connor, R.C., Fordyce, R.E., Herman, L.M., Hof, P.R., Lefebvre, L., Lusseau, D., McCowan, B., Nimchinsky, E.A., Pack, A.A., Rendell, L., Reidenberg, J.S., Reiss, D., Uhen, M.D., Van der Gucht, E., Whitehead, H. (2007). Cetaceans Have Complex Brains for Complex Cognition. <em>PLOS Biology</em>, 5(5), e139.</p>
+<p>Marino, L. et al. (2016). Neuroanatomy of the killer whale (<em>Orcinus orca</em>): a magnetic resonance imaging investigation of structure with insights on function and evolution. <em>Anatomical Record</em>.</p>
+<p>Mauch, M., Dixon, S. (2014). pYIN: A fundamental frequency estimator using probabilistic threshold distributions. <em>Proceedings of the IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)</em>, 659-663.</p>
+<p>McCowan, B., Hanser, S.F., Doyle, L.R. (1999). Quantitative tools for comparing animal communication systems: information theory applied to bottlenose dolphin whistle repertoires. <em>Animal Behaviour</em>, 57(2), 409-419.</p>
+<p>McCowan, B., Doyle, L.R., Hanser, S.F. (2002). Using information theory to assess the diversity, complexity, and development of communicative repertoires. <em>Journal of Comparative Psychology</em>, 116(2), 166-172.</p>
+<p>McFee, B. et al. (2015). librosa: Audio and Music Signal Analysis in Python. <em>Proceedings of the 14th Python in Science Conference</em>, 18-24.</p>
+<p>Menzerath, P. (1954). <em>Die Architektonik des deutschen Wortschatzes</em>. Dummler.</p>
+<p>Miller, G.A. (1957). Some effects of intermittent silence. <em>American Journal of Psychology</em>, 70(2), 311-314.</p>
+<p>Myers, S. et al. (2025). A Public Dataset of Annotated <em>Orcinus orca</em> Acoustic Signals for Detection and Ecotype Classification. <em>Nature Scientific Data</em>. DOI: 10.25921/15ey-mh50</p>
+<p>Nestor, B., Yao, B., Moore, J., Kanes, J. (2026). Positive-Unlabelled Active Learning to Curate a Dataset for Orca Resident Interpretation. arXiv:2602.09295.</p>
+<p>Ouattara, K., Lemasson, A., Zuberbuhler, K. (2009). Campbell&rsquo;s monkeys concatenate vocalizations into context-specific call sequences. <em>Proceedings of the National Academy of Sciences</em>, 106(51), 22026-22031.</p>
+<p>Rendell, L., Whitehead, H. (2003). Vocal clans in sperm whales (<em>Physeter macrocephalus</em>). <em>Proceedings of the Royal Society B</em>, 270(1512), 225-231.</p>
+<p>Sainburg, T., Thielk, M., Gentner, T.Q. (2019). Finding, visualizing, and quantifying latent structure across diverse animal vocal repertoires. <em>PLOS Computational Biology</em>.</p>
+<p>Saussure, F. de (1916). <em>Cours de linguistique generale</em>. Payot.</p>
+<p>Schonemann, P.H. (1966). A generalized solution of the orthogonal procrustes problem. <em>Psychometrika</em>, 31(1), 1-10.</p>
+<p>Shannon, C.E. (1951). Prediction and entropy of printed English. <em>Bell System Technical Journal</em>, 30(1), 50-64.</p>
+<p>Sharma, G. et al. (2024). Contextual and combinatorial structure in sperm whale vocalisations. <em>Nature Communications</em>.</p>
+<p>Suzuki, R., Buck, J.R., Tyack, P.L. (2006). Information entropy of humpback whale songs. <em>Journal of the Acoustical Society of America</em>, 119(3), 1849-1866.</p>
+<p>Turing, A.M. (1952). The Chemical Basis of Morphogenesis. <em>Philosophical Transactions of the Royal Society B</em>, 237(641), 37-72.</p>
+<p>Zipf, G.K. (1935). <em>The Psycho-Biology of Language</em>. Houghton Mifflin.</p>
+<p>Zipf, G.K. (1949). <em>Human Behavior and the Principle of Least Effort</em>. Addison-Wesley.</p>
+</body>
+</html>

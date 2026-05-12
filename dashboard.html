@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orcasound — Live Acoustic Monitor</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=JetBrains+Mono:wght@300;400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0c;
+    --bg-raised: #111115;
+    --bg-hover: #18181e;
+    --border: #222228;
+    --border-light: #2a2a32;
+    --text: #e8e8ec;
+    --text-dim: #7a7a88;
+    --text-faint: #4a4a55;
+    --accent: #3b82f6;
+    --accent-dim: #1d4ed8;
+    --green: #22c55e;
+    --green-dim: #15803d;
+    --red: #ef4444;
+    --amber: #f59e0b;
+    --cyan: #06b6d4;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.5;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  /* ── Layout ── */
+  .app {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header {
+    padding: 20px 0 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  header h1 {
+    font-weight: 200;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  header h1 span {
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  .status-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 300;
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .status-pill .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-faint);
+  }
+
+  .status-pill.live .dot {
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green-dim);
+  }
+
+  .status-pill.live { border-color: var(--green-dim); color: var(--green); }
+
+  /* ── Main grid ── */
+  main {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 1px;
+    margin: 1px 0;
+    background: var(--border);
+  }
+
+  .panel {
+    background: var(--bg);
+    padding: 16px;
+  }
+
+  /* ── Sidebar: Node selector ── */
+  .sidebar {
+    grid-row: 1 / -1;
+    padding: 12px;
+  }
+
+  .sidebar h2 {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+    padding: 0 8px;
+  }
+
+  .node-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+
+  .node-btn:hover { background: var(--bg-hover); color: var(--text); }
+
+  .node-btn.active {
+    border-color: var(--border-light);
+    background: var(--bg-raised);
+    color: var(--text);
+  }
+
+  .node-btn .node-status {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--text-faint);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .node-btn .node-status.online { background: var(--green); }
+
+  /* ── Viz area: waveform + spectrogram stacked ── */
+  .viz-stack {
+    display: grid;
+    grid-template-rows: 80px 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .viz-pane {
+    background: var(--bg);
+    padding: 0;
+    position: relative;
+    min-height: 60px;
+  }
+
+  .viz-pane canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .viz-label {
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── Metrics panels ── */
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .metric {
+    background: var(--bg);
+    padding: 14px 16px;
+  }
+
+  .metric-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 4px;
+  }
+
+  .metric-value {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .metric-unit {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-left: 4px;
+  }
+
+  .metric-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* ── Analysis panels (bottom) ── */
+  .analysis {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .analysis-panel {
+    background: var(--bg);
+    padding: 16px;
+  }
+
+  .analysis-panel h3 {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Transition matrix */
+  .matrix-grid {
+    display: grid;
+    grid-template-columns: 40px repeat(3, 1fr);
+    gap: 2px;
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+
+  .matrix-header {
+    color: var(--text-faint);
+    text-align: center;
+    padding: 4px;
+  }
+
+  .matrix-label {
+    color: var(--text-dim);
+    text-align: right;
+    padding: 4px 6px 4px 0;
+  }
+
+  .matrix-cell {
+    text-align: center;
+    padding: 6px 4px;
+    border-radius: 3px;
+    background: var(--bg-raised);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  .matrix-cell.hot {
+    background: linear-gradient(135deg, var(--accent-dim), var(--accent));
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  /* Stress indicator */
+  .stress-bar {
+    height: 4px;
+    background: var(--bg-raised);
+    border-radius: 2px;
+    margin: 8px 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .stress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.5s, background 0.5s;
+    background: var(--green);
+  }
+
+  .stress-fill.warn { background: var(--amber); }
+  .stress-fill.alert { background: var(--red); }
+
+  .stress-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+
+  .stress-item:last-child { border-bottom: none; }
+
+  .stress-item span:first-child { color: var(--text-dim); }
+  .stress-item span:last-child { font-family: var(--mono); font-size: 12px; }
+
+  /* Mel bands */
+  .mel-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 80px;
+    padding-top: 4px;
+  }
+
+  .mel-bar {
+    flex: 1;
+    min-width: 0;
+    background: linear-gradient(to top, var(--accent-dim), var(--cyan));
+    border-radius: 1px 1px 0 0;
+    transition: height 0.1s;
+    opacity: 0.8;
+  }
+
+  /* ── Footer ── */
+  footer {
+    padding: 12px 0;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-faint);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  footer a {
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+
+  footer a:hover { color: var(--text); }
+
+  /* ── Call log ── */
+  .call-log {
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+
+  .call-log::-webkit-scrollbar { width: 4px; }
+  .call-log::-webkit-scrollbar-track { background: transparent; }
+  .call-log::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
+
+  .call-entry {
+    display: grid;
+    grid-template-columns: 70px 40px 60px 1fr;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .call-entry .type { color: var(--cyan); }
+
+  /* ── Hidden audio ── */
+  #audio { display: none; }
+
+  /* ── Mobile tabs ── */
+  .mobile-tabs {
+    display: none;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-tab {
+    display: inline-block;
+    padding: 10px 16px;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .mobile-tab:hover { color: var(--text-dim); }
+  .mobile-tab.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .app { padding: 0 12px; display: flex; flex-direction: column; min-height: 0; height: auto; }
+
+    .mobile-tabs { display: flex; flex-shrink: 0; }
+
+    main {
+      display: block;
+    }
+
+    .sidebar {
+      display: flex;
+      gap: 4px;
+      padding: 8px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .sidebar h2 { display: none; }
+
+    .sidebar .node-btn {
+      display: inline-block;
+      width: auto;
+      padding: 6px 12px;
+      font-size: 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .viz-stack { height: 250px; grid-template-rows: 60px 1fr; }
+    .viz-pane { min-height: 0; }
+    .metrics-row { grid-template-columns: repeat(2, 1fr); }
+    .analysis { grid-template-columns: 1fr; }
+
+    /* Tab-controlled visibility on mobile */
+    .mobile-hide { display: none !important; }
+  }
+
+  @media (max-width: 480px) {
+    header h1 { font-size: 14px; }
+    .metric-value { font-size: 18px; }
+    .metrics-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <h1>ORCASOUND <span>/ live acoustic monitor</span></h1>
+    <div class="status-pill" id="statusPill">
+      <div class="dot"></div>
+      <span id="statusText">disconnected</span>
+    </div>
+  </header>
+
+  <div class="mobile-tabs" id="mobileTabs">
+    <button class="mobile-tab active" data-tab="live">Live</button>
+    <button class="mobile-tab" data-tab="metrics">Metrics</button>
+    <button class="mobile-tab" data-tab="analysis">Analysis</button>
+    <button class="mobile-tab" data-tab="log">Log</button>
+  </div>
+
+  <main>
+    <div class="panel sidebar" id="sidebar">
+      <h2>Hydrophones</h2>
+    </div>
+
+    <div class="viz-stack" data-section="live">
+      <div class="viz-pane">
+        <div class="viz-label">waveform</div>
+        <canvas id="waveform"></canvas>
+      </div>
+      <div class="viz-pane">
+        <div class="viz-label">spectrogram</div>
+        <canvas id="spectrogram"></canvas>
+      </div>
+    </div>
+
+    <div class="metrics-row" data-section="metrics">
+      <div class="metric">
+        <div class="metric-label">Calls Detected</div>
+        <div class="metric-value" id="metricCalls">0</div>
+        <div class="metric-sub" id="metricCallRate">—</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Spectral Centroid</div>
+        <div class="metric-value" id="metricCentroid">—<span class="metric-unit">Hz</span></div>
+        <div class="metric-sub" id="metricBandwidth">—</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Self-Transition</div>
+        <div class="metric-value" id="metricSelfTrans">—</div>
+        <div class="metric-sub">baseline 0.975</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Dominant Type</div>
+        <div class="metric-value" id="metricDominant">—</div>
+        <div class="metric-sub" id="metricDominantPct">—</div>
+      </div>
+    </div>
+
+    <div class="analysis" data-section="analysis">
+      <div class="analysis-panel">
+        <h3>Transition Matrix</h3>
+        <div class="matrix-grid" id="matrix">
+          <div class="matrix-header"></div>
+          <div class="matrix-header">C0</div>
+          <div class="matrix-header">C1</div>
+          <div class="matrix-header">C2</div>
+          <div class="matrix-label">C0</div>
+          <div class="matrix-cell" id="m00">—</div>
+          <div class="matrix-cell" id="m01">—</div>
+          <div class="matrix-cell" id="m02">—</div>
+          <div class="matrix-label">C1</div>
+          <div class="matrix-cell" id="m10">—</div>
+          <div class="matrix-cell" id="m11">—</div>
+          <div class="matrix-cell" id="m12">—</div>
+          <div class="matrix-label">C2</div>
+          <div class="matrix-cell" id="m20">—</div>
+          <div class="matrix-cell" id="m21">—</div>
+          <div class="matrix-cell" id="m22">—</div>
+        </div>
+      </div>
+
+      <div class="analysis-panel">
+        <h3>Welfare Indicators</h3>
+        <div class="stress-item">
+          <span>C0 dominance</span>
+          <span id="stressC0">—</span>
+        </div>
+        <div class="stress-bar"><div class="stress-fill" id="stressC0Bar" style="width:0%"></div></div>
+        <div class="stress-item">
+          <span>Bandwidth</span>
+          <span id="stressBW">—</span>
+        </div>
+        <div class="stress-bar"><div class="stress-fill" id="stressBWBar" style="width:0%"></div></div>
+        <div class="stress-item">
+          <span>Self-transition rate</span>
+          <span id="stressST">—</span>
+        </div>
+        <div class="stress-bar"><div class="stress-fill" id="stressSTBar" style="width:0%"></div></div>
+        <div class="stress-item">
+          <span>Overall welfare</span>
+          <span id="stressOverall">monitoring</span>
+        </div>
+      </div>
+
+      <div class="analysis-panel">
+        <h3>Mel Spectrum</h3>
+        <div class="mel-bars" id="melBars"></div>
+      </div>
+    </div>
+
+    <div class="panel" data-section="log" style="padding:16px;">
+      <h3 style="font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);">Recent Calls</h3>
+      <div class="call-log" id="callLog">
+        <div style="color:var(--text-faint);padding:8px 0;">waiting for data...</div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>Data: Orcasound (CC BY-NC-SA 4.0) — Analysis: orca-engine / Seladori project</span>
+    <a href="https://www.orcasound.net" target="_blank">orcasound.net</a>
+  </footer>
+
+</div>
+
+<video id="audio" style="width:0;height:0;position:absolute;"></video>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// Orcasound Live Acoustic Monitor
+// Real-time feature extraction + call classification + welfare tracking
+// Based on orca-engine findings (54 findings, 40,000 calls)
+// ═══════════════════════════════════════════════════════════════
+
+const NODES = [
+  { name: 'Orcasound Lab', node: 'rpi_orcasound_lab', lat: 48.558, lng: -123.174 },
+  { name: 'Port Townsend', node: 'rpi_port_townsend', lat: 48.136, lng: -122.761 },
+  { name: 'Bush Point', node: 'rpi_bush_point', lat: 48.034, lng: -122.604 },
+  { name: 'Sunset Bay', node: 'rpi_sunset_bay', lat: 47.865, lng: -122.334 },
+  { name: 'MaST Center', node: 'rpi_mast_center', lat: 47.349, lng: -122.325 },
+  { name: 'North San Juan', node: 'rpi_north_sjc', lat: 48.590, lng: -123.060 },
+  { name: 'Andrews Bay', node: 'rpi_andrews_bay', lat: 48.558, lng: -123.170 },
+];
+
+const BUCKET = 'audio-orcasound-net';
+const SAMPLE_RATE = 22050;
+const FFT_SIZE = 2048;
+const N_MELS = 26;
+const MEL_FMIN = 0;
+const MEL_FMAX = SAMPLE_RATE / 2;
+
+// ── App state ──
+let state = {
+  activeNode: null,
+  hls: null,
+  audioCtx: null,
+  analyser: null,
+  source: null,
+  running: false,
+  // Call detection
+  calls: [],
+  callCount: 0,
+  inCall: false,
+  callStart: 0,
+  callFeatures: [],
+  lastType: -1,
+  // Transition tracking
+  transitions: Array.from({length: 9}, () => 0),
+  typeCounts: [0, 0, 0],
+  // Spectrogram
+  spectroData: [],
+  // Mel filterbank (precomputed)
+  melBank: null,
+  // Cluster centroids (from paper: k=3 on annotation metadata)
+  centroids: null,
+};
+
+// ═══════════════════════════════════════════════════════════════
+// MEL FILTERBANK — 26 triangular filters, 0-11025 Hz
+// ═══════════════════════════════════════════════════════════════
+
+function hzToMel(hz) { return 2595 * Math.log10(1 + hz / 700); }
+function melToHz(mel) { return 700 * (Math.pow(10, mel / 2595) - 1); }
+
+function buildMelFilterbank(nMels, fftSize, sr) {
+  const nBins = fftSize / 2 + 1;
+  const melMin = hzToMel(MEL_FMIN);
+  const melMax = hzToMel(MEL_FMAX);
+  const melPoints = [];
+  for (let i = 0; i <= nMels + 1; i++) {
+    melPoints.push(melToHz(melMin + (melMax - melMin) * i / (nMels + 1)));
+  }
+  const binPoints = melPoints.map(f => Math.round(f * fftSize / sr));
+  const bank = [];
+  for (let m = 0; m < nMels; m++) {
+    const row = new Float32Array(nBins);
+    for (let k = binPoints[m]; k < binPoints[m + 1]; k++) {
+      row[k] = (k - binPoints[m]) / (binPoints[m + 1] - binPoints[m]);
+    }
+    for (let k = binPoints[m + 1]; k < binPoints[m + 2]; k++) {
+      row[k] = (binPoints[m + 2] - k) / (binPoints[m + 2] - binPoints[m + 1]);
+    }
+    bank.push(row);
+  }
+  return bank;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SPECTRAL FEATURES — from FFT power spectrum
+// ═══════════════════════════════════════════════════════════════
+
+function computeSpectralFeatures(freqData, sr, fftSize) {
+  const nBins = freqData.length;
+  const binHz = sr / fftSize;
+  // Convert from dB to power
+  const power = new Float32Array(nBins);
+  let totalPower = 0;
+  for (let i = 0; i < nBins; i++) {
+    power[i] = Math.pow(10, freqData[i] / 10);
+    totalPower += power[i];
+  }
+  if (totalPower < 1e-10) return null;
+
+  // Spectral centroid
+  let centroid = 0;
+  for (let i = 0; i < nBins; i++) centroid += i * binHz * power[i];
+  centroid /= totalPower;
+
+  // Spectral bandwidth
+  let bandwidth = 0;
+  for (let i = 0; i < nBins; i++) {
+    const d = i * binHz - centroid;
+    bandwidth += d * d * power[i];
+  }
+  bandwidth = Math.sqrt(bandwidth / totalPower);
+
+  // Spectral rolloff (85%)
+  let cumPower = 0;
+  let rolloff = 0;
+  for (let i = 0; i < nBins; i++) {
+    cumPower += power[i];
+    if (cumPower >= 0.85 * totalPower) { rolloff = i * binHz; break; }
+  }
+
+  // Spectral flatness
+  let logSum = 0;
+  let linSum = 0;
+  let count = 0;
+  for (let i = 1; i < nBins; i++) {
+    if (power[i] > 1e-10) {
+      logSum += Math.log(power[i]);
+      linSum += power[i];
+      count++;
+    }
+  }
+  const flatness = count > 0 ? Math.exp(logSum / count) / (linSum / count) : 0;
+
+  // Mel-band energies
+  const melEnergies = new Float32Array(N_MELS);
+  for (let m = 0; m < N_MELS; m++) {
+    let e = 0;
+    for (let k = 0; k < nBins; k++) e += state.melBank[m][k] * power[k];
+    melEnergies[m] = e > 1e-10 ? 10 * Math.log10(e) : -80;
+  }
+
+  return { centroid, bandwidth, rolloff, flatness, totalPower, melEnergies, power };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CALL SEGMENTATION — energy threshold with hysteresis
+// ═══════════════════════════════════════════════════════════════
+
+const CALL_THRESHOLD_ON = -30;   // dB — start detecting (raised from -45)
+const CALL_THRESHOLD_OFF = -40;  // dB — stop detecting (hysteresis)
+const MIN_CALL_DURATION = 0.05;  // seconds
+const MAX_CALL_DURATION = 5.0;   // seconds
+const CALL_GAP = 0.02;           // min gap between calls (20ms from Finding 29)
+
+function checkCallBoundary(rmsDb, timestamp) {
+  if (!state.inCall) {
+    if (rmsDb > CALL_THRESHOLD_ON) {
+      state.inCall = true;
+      state.callStart = timestamp;
+      state.callFeatures = [];
+    }
+  } else {
+    const duration = timestamp - state.callStart;
+    if (rmsDb < CALL_THRESHOLD_OFF || duration > MAX_CALL_DURATION) {
+      state.inCall = false;
+      if (duration >= MIN_CALL_DURATION && state.callFeatures.length > 0) {
+        finaliseCall(duration);
+      }
+    }
+  }
+}
+
+function finaliseCall(duration) {
+  // Average features across call frames
+  const n = state.callFeatures.length;
+  const avgMel = new Float32Array(N_MELS);
+  let avgCentroid = 0, avgBandwidth = 0;
+
+  for (const f of state.callFeatures) {
+    avgCentroid += f.centroid;
+    avgBandwidth += f.bandwidth;
+    for (let m = 0; m < N_MELS; m++) avgMel[m] += f.melEnergies[m];
+  }
+  avgCentroid /= n;
+  avgBandwidth /= n;
+  for (let m = 0; m < N_MELS; m++) avgMel[m] /= n;
+
+  // Classify (simple k-means nearest centroid)
+  const type = classifyCall(avgCentroid, avgBandwidth, duration);
+
+  // Track transitions
+  if (state.lastType >= 0) {
+    state.transitions[state.lastType * 3 + type]++;
+  }
+  state.typeCounts[type]++;
+  state.lastType = type;
+  state.callCount++;
+
+  // Log it
+  const call = {
+    time: new Date().toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit',second:'2-digit'}),
+    type,
+    centroid: Math.round(avgCentroid),
+    bandwidth: Math.round(avgBandwidth),
+    duration: duration.toFixed(2),
+    melEnergies: avgMel,
+  };
+  state.calls.unshift(call);
+  if (state.calls.length > 200) state.calls.pop();
+
+  updateCallLog(call);
+  updateMetrics();
+  updateTransitionMatrix();
+  updateWelfare();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CLASSIFICATION — k=3, nearest centroid
+// Centroids derived from DCLDE SRKW data (Finding 6)
+// Using normalised annotation features: center_freq, bandwidth, duration
+// ═══════════════════════════════════════════════════════════════
+
+// Approximate centroids from the paper's k=3 clustering
+// C0: dominant low-frequency, short — the contact call regime
+// C1: high-frequency, wide bandwidth — rare, stress-associated
+// C2: mid-frequency, moderate — transition calls
+const CENTROIDS = [
+  { centroid: 2800, bandwidth: 2400, duration: 0.9 },   // C0
+  { centroid: 6800, bandwidth: 12000, duration: 1.5 },   // C1
+  { centroid: 4500, bandwidth: 5000, duration: 1.2 },    // C2
+];
+
+function classifyCall(centroid, bandwidth, duration) {
+  let bestDist = Infinity;
+  let bestType = 0;
+  for (let i = 0; i < 3; i++) {
+    const dc = (centroid - CENTROIDS[i].centroid) / 3000;
+    const db = (bandwidth - CENTROIDS[i].bandwidth) / 5000;
+    const dd = (duration - CENTROIDS[i].duration) / 1.0;
+    const dist = dc * dc + db * db + dd * dd;
+    if (dist < bestDist) { bestDist = dist; bestType = i; }
+  }
+  return bestType;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STREAM CONNECTION — HLS.js + plain <audio> element
+// ═══════════════════════════════════════════════════════════════
+
+let hlsInstance = null;
+let timestampInterval = null;
+
+function getHlsURI(bucket, nodeName, timestamp) {
+  return `https://${bucket}.s3.amazonaws.com/${nodeName}/hls/${timestamp}/live.m3u8`;
+}
+
+function fetchTimestamp(bucket, nodeName, callback) {
+  const url = `https://${bucket}.s3.amazonaws.com/${nodeName}/latest.txt`;
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.onload = () => {
+    if (xhr.status === 200) {
+      const ts = Number(xhr.responseText.trim());
+      if (!isNaN(ts)) {
+        // Verify the manifest actually exists before calling back
+        const manifestUrl = getHlsURI(bucket, nodeName, ts);
+        const check = new XMLHttpRequest();
+        check.open('HEAD', manifestUrl);
+        check.onload = () => { if (check.status === 200) callback(ts); };
+        check.send();
+      }
+    }
+  };
+  xhr.onerror = () => {};
+  xhr.send();
+}
+
+function connectToNode(nodeInfo) {
+  // Clean up
+  if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
+  if (timestampInterval) { clearInterval(timestampInterval); }
+  if (state.audioCtx) { state.audioCtx.close(); state.audioCtx = null; }
+  state.running = false;
+  state.activeNode = nodeInfo;
+  highlightNode(nodeInfo.node);
+  setStatus('connecting', false);
+
+  const audio = document.getElementById('audio');
+  audio.pause();
+
+  fetchTimestamp(BUCKET, nodeInfo.node, (ts) => {
+    const uri = getHlsURI(BUCKET, nodeInfo.node, ts);
+    setStatus('loading', false);
+
+    // Exactly per HLS.js README: loadSource, then attachMedia
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(uri);
+      hls.attachMedia(audio);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        audio.play().catch(() => {
+          setStatus('tap anywhere to start', false);
+          document.addEventListener('click', () => audio.play(), { once: true });
+        });
+      });
+      hls.on(Hls.Events.ERROR, (_, data) => {
+        setStatus(data.details, false);
+        if (data.fatal) {
+          if (data.type === Hls.ErrorTypes.MEDIA_ERROR) hls.recoverMediaError();
+          else { hls.destroy(); setStatus('fatal: ' + data.details, false); }
+        }
+      });
+      hlsInstance = hls;
+    } else if (audio.canPlayType('application/vnd.apple.mpegurl')) {
+      audio.src = uri;
+      audio.play().catch(() => {
+        setStatus('tap anywhere to start', false);
+        document.addEventListener('click', () => audio.play(), { once: true });
+      });
+    } else {
+      setStatus('browser not supported', false);
+      return;
+    }
+
+    audio.onplaying = () => { setStatus('live', true); setupAudioPipeline(audio); };
+    audio.onwaiting = () => setStatus('buffering', false);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// AUDIO PIPELINE — Web Audio API from <audio> element
+// ═══════════════════════════════════════════════════════════════
+
+function setupAudioPipeline(audioEl) {
+  if (state.running) return;
+
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const source = ctx.createMediaElementSource(audioEl);
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = FFT_SIZE;
+    analyser.smoothingTimeConstant = 0.3;
+    source.connect(analyser);
+    analyser.connect(ctx.destination);
+
+    state.audioCtx = ctx;
+    state.analyser = analyser;
+    state.source = source;
+    state.melBank = buildMelFilterbank(N_MELS, FFT_SIZE, ctx.sampleRate);
+    state.running = true;
+
+    // setInterval instead of rAF — rAF throttles on mobile tab switch
+    setInterval(analysisLoop, 50);
+  } catch(e) {
+    // Analysis fails but audio still plays
+    setStatus('live (no analysis)', true);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MAIN ANALYSIS LOOP — runs every animation frame
+// ═══════════════════════════════════════════════════════════════
+
+function analysisLoop() {
+  if (!state.running || !state.analyser) return;
+
+  const analyser = state.analyser;
+  const freqData = new Float32Array(analyser.frequencyBinCount);
+  const timeData = new Float32Array(analyser.fftSize);
+  analyser.getFloatFrequencyData(freqData);
+  analyser.getFloatTimeDomainData(timeData);
+
+  // RMS in dB
+  let rmsSum = 0;
+  for (let i = 0; i < timeData.length; i++) rmsSum += timeData[i] * timeData[i];
+  const rms = Math.sqrt(rmsSum / timeData.length);
+  const rmsDb = rms > 0 ? 20 * Math.log10(rms) : -100;
+
+  // Spectral features
+  const sr = state.audioCtx ? state.audioCtx.sampleRate : SAMPLE_RATE;
+  const features = computeSpectralFeatures(freqData, sr, FFT_SIZE);
+
+  if (features) {
+    // Call detection
+    const now = state.audioCtx.currentTime;
+    checkCallBoundary(rmsDb, now);
+    if (state.inCall) {
+      state.callFeatures.push(features);
+    }
+
+    // Live displays
+    updateWaveform(timeData);
+    updateSpectrogram(features.melEnergies);
+    updateMelBars(features.melEnergies);
+    updateLiveCentroid(features.centroid, features.bandwidth);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// UI UPDATES
+// ═══════════════════════════════════════════════════════════════
+
+function setStatus(text, live) {
+  const pill = document.getElementById('statusPill');
+  const span = document.getElementById('statusText');
+  span.textContent = text;
+  pill.className = 'status-pill' + (live ? ' live' : '');
+}
+
+function highlightNode(nodeId) {
+  document.querySelectorAll('.node-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.node === nodeId);
+  });
+}
+
+// Waveform — real-time oscilloscope
+let waveCanvas, waveCtx;
+
+function initWaveform() {
+  waveCanvas = document.getElementById('waveform');
+  waveCtx = waveCanvas.getContext('2d');
+  resizeWaveform();
+  window.addEventListener('resize', resizeWaveform);
+}
+
+function resizeWaveform() {
+  const rect = waveCanvas.parentElement.getBoundingClientRect();
+  waveCanvas.width = rect.width;
+  waveCanvas.height = rect.height;
+}
+
+function updateWaveform(timeData) {
+  if (!waveCtx) return;
+  const w = waveCanvas.width;
+  const h = waveCanvas.height;
+  const ctx = waveCtx;
+  const mid = h / 2;
+
+  ctx.fillStyle = 'rgba(10, 10, 12, 0.3)';
+  ctx.fillRect(0, 0, w, h);
+
+  // Center line
+  ctx.strokeStyle = '#1a1a22';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, mid);
+  ctx.lineTo(w, mid);
+  ctx.stroke();
+
+  // Waveform
+  ctx.strokeStyle = '#06b6d4';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+
+  const step = timeData.length / w;
+  for (let i = 0; i < w; i++) {
+    const idx = Math.floor(i * step);
+    const v = timeData[idx];
+    const y = mid + v * mid * 4; // amplify for visibility
+    if (i === 0) ctx.moveTo(i, y);
+    else ctx.lineTo(i, y);
+  }
+  ctx.stroke();
+
+  // Glow pass
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.3)';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  for (let i = 0; i < w; i++) {
+    const idx = Math.floor(i * step);
+    const v = timeData[idx];
+    const y = mid + v * mid * 4;
+    if (i === 0) ctx.moveTo(i, y);
+    else ctx.lineTo(i, y);
+  }
+  ctx.stroke();
+}
+
+// Spectrogram — scrolling mel-band heatmap
+let spectroCanvas, spectroCtx;
+
+function initSpectrogram() {
+  spectroCanvas = document.getElementById('spectrogram');
+  spectroCtx = spectroCanvas.getContext('2d');
+  resizeSpectrogram();
+  window.addEventListener('resize', resizeSpectrogram);
+}
+
+function resizeSpectrogram() {
+  const rect = spectroCanvas.parentElement.getBoundingClientRect();
+  spectroCanvas.width = rect.width;
+  spectroCanvas.height = rect.height;
+}
+
+function updateSpectrogram(melEnergies) {
+  if (!spectroCtx) return;
+  const w = spectroCanvas.width;
+  const h = spectroCanvas.height;
+  const ctx = spectroCtx;
+
+  // Shift existing image left by 2px
+  const imageData = ctx.getImageData(2, 0, w - 2, h);
+  ctx.putImageData(imageData, 0, 0);
+
+  // Draw new column on the right
+  const colWidth = 2;
+  const bandH = h / N_MELS;
+  for (let m = 0; m < N_MELS; m++) {
+    const norm = Math.max(0, Math.min(1, (melEnergies[m] + 80) / 60));
+    const r = Math.floor(norm * norm * 100 + norm * 155);
+    const g = Math.floor(norm * norm * 180 + norm * 40);
+    const b = Math.floor(norm * 220 + 20);
+    ctx.fillStyle = `rgb(${r},${g},${b})`;
+    ctx.fillRect(w - colWidth, h - (m + 1) * bandH, colWidth, bandH);
+  }
+}
+
+// Mel bars
+function initMelBars() {
+  const container = document.getElementById('melBars');
+  container.innerHTML = '';
+  for (let m = 0; m < N_MELS; m++) {
+    const bar = document.createElement('div');
+    bar.className = 'mel-bar';
+    bar.style.height = '2px';
+    bar.id = `mel${m}`;
+    container.appendChild(bar);
+  }
+}
+
+function updateMelBars(melEnergies) {
+  for (let m = 0; m < N_MELS; m++) {
+    const norm = Math.max(0, Math.min(1, (melEnergies[m] + 80) / 60));
+    const el = document.getElementById(`mel${m}`);
+    if (el) el.style.height = (2 + norm * 78) + 'px';
+  }
+}
+
+function updateLiveCentroid(centroid, bandwidth) {
+  document.getElementById('metricCentroid').innerHTML =
+    Math.round(centroid) + '<span class="metric-unit">Hz</span>';
+  document.getElementById('metricBandwidth').textContent =
+    'bw ' + Math.round(bandwidth) + ' Hz';
+}
+
+function updateMetrics() {
+  const total = state.callCount;
+  document.getElementById('metricCalls').textContent = total;
+
+  if (state.calls.length >= 2) {
+    document.getElementById('metricCallRate').textContent =
+      (state.calls.length > 5 ? '~' : '') + 'active';
+  }
+
+  const maxType = state.typeCounts.indexOf(Math.max(...state.typeCounts));
+  const typeLabels = ['C0', 'C1', 'C2'];
+  const typeColors = ['var(--cyan)', 'var(--red)', 'var(--amber)'];
+  document.getElementById('metricDominant').innerHTML =
+    `<span style="color:${typeColors[maxType]}">${typeLabels[maxType]}</span>`;
+  const pct = total > 0 ? (state.typeCounts[maxType] / total * 100).toFixed(1) : '—';
+  document.getElementById('metricDominantPct').textContent = pct + '%';
+
+  let selfTrans = 0, totalTrans = 0;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      const v = state.transitions[i * 3 + j];
+      totalTrans += v;
+      if (i === j) selfTrans += v;
+    }
+  }
+  const stRate = totalTrans > 0 ? (selfTrans / totalTrans).toFixed(3) : '—';
+  document.getElementById('metricSelfTrans').textContent = stRate;
+}
+
+function updateTransitionMatrix() {
+  for (let i = 0; i < 3; i++) {
+    let rowTotal = 0;
+    for (let j = 0; j < 3; j++) rowTotal += state.transitions[i * 3 + j];
+    for (let j = 0; j < 3; j++) {
+      const cell = document.getElementById(`m${i}${j}`);
+      const v = state.transitions[i * 3 + j];
+      const p = rowTotal > 0 ? (v / rowTotal) : 0;
+      cell.textContent = rowTotal > 0 ? p.toFixed(2) : '—';
+      cell.className = 'matrix-cell' + (p > 0.5 ? ' hot' : '');
+    }
+  }
+}
+
+function updateWelfare() {
+  const total = state.callCount;
+  if (total < 5) return;
+
+  const c0pct = state.typeCounts[0] / total;
+  document.getElementById('stressC0').textContent = (c0pct * 100).toFixed(1) + '%';
+  const c0bar = document.getElementById('stressC0Bar');
+  c0bar.style.width = (c0pct * 100) + '%';
+  c0bar.className = 'stress-fill' + (c0pct < 0.85 ? ' alert' : c0pct < 0.95 ? ' warn' : '');
+
+  const avgBW = state.calls.slice(0, 20).reduce((s, c) => s + c.bandwidth, 0) /
+                Math.min(20, state.calls.length);
+  document.getElementById('stressBW').textContent = Math.round(avgBW) + ' Hz';
+  const bwNorm = Math.min(1, avgBW / 10000);
+  const bwBar = document.getElementById('stressBWBar');
+  bwBar.style.width = (bwNorm * 100) + '%';
+  bwBar.className = 'stress-fill' + (avgBW > 5000 ? ' alert' : avgBW > 3500 ? ' warn' : '');
+
+  let selfTrans = 0, totalTrans = 0;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      totalTrans += state.transitions[i * 3 + j];
+      if (i === j) selfTrans += state.transitions[i * 3 + j];
+    }
+  }
+  const stRate = totalTrans > 0 ? selfTrans / totalTrans : 1;
+  document.getElementById('stressST').textContent = stRate.toFixed(3);
+  const stBar = document.getElementById('stressSTBar');
+  stBar.style.width = (stRate * 100) + '%';
+  stBar.className = 'stress-fill' + (stRate < 0.85 ? ' alert' : stRate < 0.92 ? ' warn' : '');
+
+  const alerts = (c0pct < 0.85 ? 1 : 0) + (avgBW > 5000 ? 1 : 0) + (stRate < 0.85 ? 1 : 0);
+  const warns = (c0pct < 0.95 ? 1 : 0) + (avgBW > 3500 ? 1 : 0) + (stRate < 0.92 ? 1 : 0);
+  const overall = document.getElementById('stressOverall');
+  if (alerts >= 2) {
+    overall.textContent = 'STRESS DETECTED';
+    overall.style.color = 'var(--red)';
+  } else if (warns >= 2) {
+    overall.textContent = 'elevated activity';
+    overall.style.color = 'var(--amber)';
+  } else {
+    overall.textContent = 'normal';
+    overall.style.color = 'var(--green)';
+  }
+}
+
+function updateCallLog(call) {
+  const log = document.getElementById('callLog');
+  if (state.callCount === 1) log.innerHTML = '';
+  const typeLabels = ['C0', 'C1', 'C2'];
+  const entry = document.createElement('div');
+  entry.className = 'call-entry';
+  entry.innerHTML = `
+    <span>${call.time}</span>
+    <span class="type">${typeLabels[call.type]}</span>
+    <span>${call.centroid} Hz</span>
+    <span>${call.duration}s</span>
+  `;
+  log.prepend(entry);
+  if (log.children.length > 50) log.lastChild.remove();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+
+function init() {
+  const sidebar = document.getElementById('sidebar');
+
+  NODES.forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'node-btn';
+    btn.dataset.node = n.node;
+    btn.innerHTML = `<span class="node-status"></span>${n.name}`;
+    btn.addEventListener('click', () => connectToNode(n));
+    sidebar.appendChild(btn);
+
+    fetchTimestamp(BUCKET, n.node, (ts) => {
+      btn.querySelector('.node-status').classList.add('online');
+      n.online = true;
+      n.latestTimestamp = ts;
+    });
+  });
+
+  initWaveform();
+  initSpectrogram();
+  initMelBars();
+  initMobileTabs();
+
+  // Auto-connect to first online node after checking
+  setTimeout(() => {
+    const first = NODES.find(n => n.online);
+    if (first) connectToNode(first);
+  }, 2000);
+}
+
+function initMobileTabs() {
+  const tabs = document.querySelectorAll('.mobile-tab');
+  const isMobile = () => window.innerWidth <= 900;
+
+  // Map tabs to sections. "log" shows analysis panel (which contains the call log)
+  const tabMap = {
+    live: ['live'],
+    metrics: ['metrics'],
+    analysis: ['analysis'],
+    log: ['log'],
+  };
+
+  function switchTab(tabName) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tabName));
+    if (!isMobile()) return;
+
+    // Hide all sections, show the ones for this tab
+    document.querySelectorAll('[data-section]').forEach(el => {
+      const section = el.dataset.section;
+      const show = tabMap[tabName]?.includes(section);
+      el.classList.toggle('mobile-hide', !show);
+    });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+  });
+
+  // Reset on resize (show all on desktop)
+  window.addEventListener('resize', () => {
+    if (!isMobile()) {
+      document.querySelectorAll('[data-section]').forEach(el => {
+        el.classList.remove('mobile-hide');
+      });
+    } else {
+      const active = document.querySelector('.mobile-tab.active');
+      if (active) switchTab(active.dataset.tab);
+    }
+  });
+
+  // Initial state on mobile
+  if (isMobile()) switchTab('live');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
