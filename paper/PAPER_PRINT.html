@@ -1031,6 +1031,49 @@ table {
 </tr>
 </tbody>
 </table>
+<h2 id="71-pilot-held-out-validation">7.1 Pilot Held-Out Validation</h2>
+<p>A reviewer-anticipatable concern with the indicators in Table 7 is that they are derived from the same corpus used to identify the 2019 anomaly. A pilot held-out validation is reported here for the cluster-distribution indicator using the publicly distributed feature subset. After restricting to the Orcasound Lab hydrophone (station held constant), the subset contains 155 SRKW calls from 2017 (pre-crisis baseline), 140 from 2019 (known crisis), and 37 from 2020 (post-crisis recovery year). K-means at k = 3 was fit on the combined subset (random_state = 42); thresholds were derived from the 2017 baseline alone, then applied blind to 2019 and 2020.</p>
+<table>
+<thead>
+<tr>
+<th>Year</th>
+<th>N</th>
+<th>Dominant cluster share</th>
+<th>Non-dominant share</th>
+<th>Threshold (&gt; 5%)</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017</td>
+<td>155</td>
+<td>100.0%</td>
+<td>0.0%</td>
+<td>(baseline)</td>
+<td>BASELINE</td>
+</tr>
+<tr>
+<td><strong>2019</strong></td>
+<td>140</td>
+<td>39.3%</td>
+<td><strong>60.7%</strong></td>
+<td>YES</td>
+<td><strong>FLAG (known crisis)</strong></td>
+</tr>
+<tr>
+<td><strong>2020</strong></td>
+<td>37</td>
+<td>100.0%</td>
+<td>0.0%</td>
+<td>no</td>
+<td>quiet (held-out recovery)</td>
+</tr>
+</tbody>
+</table>
+<p>The detector trained on the 2017 baseline (no exposure to 2019 data during threshold derivation) fires on 2019 and stays quiet on 2020, both at the same station. The 2020 result is small-N (37 calls) and should be treated as a pilot rather than a full false-positive test, but the direction is consistent with the 2019 effect being a real ecological signal rather than a station, equipment, or annotation-pipeline artefact. The script implementing this analysis is <code>analyse_holdout.py</code> in the code repository.</p>
+<p>A proper prospective validation would re-run the Section 5.7 analysis on the full DCLDE annotation corpus with year-stratified train/test splits and report the empirical false-positive rate across all non-crisis years. That extension is straightforward; the gating step is access to the full source annotations rather than the feature subsets distributed here.</p>
+<h2 id="72-operational-considerations">7.2 Operational Considerations</h2>
 <p>The monitoring infrastructure already exists. The Orcasound hydrophone network streams 24/7 from multiple Salish Sea locations. The JASCO/VFPA hydrophones provide additional coverage. The analysis pipeline described in this paper is reproducible and computationally inexpensive, clustering and transition analysis on a day&rsquo;s recordings completes in seconds on consumer hardware.</p>
 <p>For a population of approximately 75 individuals classified as Endangered under both the U.S. Endangered Species Act and Canada&rsquo;s Species at Risk Act, acoustic welfare monitoring along these lines is in principle deployable using the framework presented here and existing recording infrastructure. The remaining steps are prospective validation (false-positive rate, minimum detection latency, robustness to recording conditions) on a held-out year of streaming data before any operational claim can be supported.</p>
 <hr />
